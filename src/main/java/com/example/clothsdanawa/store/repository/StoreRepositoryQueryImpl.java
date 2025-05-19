@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.clothsdanawa.store.common.StoreStatus;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
+import com.example.clothsdanawa.store.entity.QStore;
 import com.example.clothsdanawa.store.entity.Store;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,7 +30,7 @@ public class StoreRepositoryQueryImpl implements StoreRepositoryQuery {
 				keywordContains(requestDto.getKeyword()),            // 키워드 포함 여부
 				cursorCondition(requestDto.getCursor())                // 커서 필터
 			)
-			.orderBy(store.createAt.asc())                            // 업데이트 날짜 기준 내림차순 정렬
+			.orderBy(store.createdAt.asc())                            // 업데이트 날짜 기준 내림차순 정렬
 			.limit(10)                                                // 커서 사이즈 10개
 			.fetch();
 	}
@@ -41,6 +42,6 @@ public class StoreRepositoryQueryImpl implements StoreRepositoryQuery {
 
 	// 커서 조건 (커서 이후 데이터를 조회)
 	private BooleanExpression cursorCondition(Long cursor) {
-		return (cursor != null) ? QStore.store.id.gt(cursor) : null;
+		return (cursor != null) ? QStore.store.storeId.gt(cursor) : null;
 	}
 }
