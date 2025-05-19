@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.clothsdanawa.auth.dto.AuthLoginRequestDto;
 import com.example.clothsdanawa.auth.dto.AuthResponseDto;
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
 import com.example.clothsdanawa.auth.service.AuthService;
@@ -26,5 +27,11 @@ public class AuthController {
 
 	}
 
+	@PostMapping("/login")
+	public ResponseEntity<AuthResponseDto> login(@RequestBody AuthLoginRequestDto authLoginRequestDto) {
+
+		return ResponseEntity.status(200).body(authService.login(authLoginRequestDto));
+
+	}
 
 }

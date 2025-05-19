@@ -3,6 +3,7 @@ package com.example.clothsdanawa.auth.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.clothsdanawa.auth.dto.AuthLoginRequestDto;
 import com.example.clothsdanawa.auth.dto.AuthResponseDto;
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
 import com.example.clothsdanawa.common.jwt.JwtUtil;
@@ -35,5 +36,18 @@ public class AuthService {
 			savedUser.getUserRole());
 
 		return AuthResponseDto.of(savedUser, jwtToken);
+	}
+
+	public AuthResponseDto login(AuthLoginRequestDto authLoginRequestDto) {
+
+		User findedUser = userRepository.findByEmailOrElseThrow(authLoginRequestDto.getEmail());
+		if (!passwordEncoder.matches(authLoginRequestDto.getPassword(), findedUser.getPassword())) {
+			throw new RuntimeException("비밀번호가 틀렸습니다");
+		}
+
+		String jwtToken = jwtUtil.createToken(findedUser.getUserId(), findedUser.getName(), findedUser.getEmail(),
+			findedUser.getUserRole());
+
+		return AuthResponseDto.of(findedUser, jwtToken);
 	}
 }
