@@ -109,10 +109,12 @@ public class CartService {
         cartItem.updateQuantity(cartItem, quantity);
 
         cart.calculateTotalPrice();
-        cartRepository.save(cart);
 
         return CartResponseDto.from(cart);
     }
 
-
+    @Transactional
+    public void deleteCart(Long userId){
+        cartRepository.deleteById(userId);
+    }
 }

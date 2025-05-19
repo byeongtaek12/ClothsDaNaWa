@@ -40,7 +40,12 @@ public class CartController {
                                                       @RequestBody @Valid CartUpdateRequestDto requestDto){
         return new ResponseEntity<>(cartService.updateCart(userDetails.getId,requestDto.getCartItemId(),requestDto.getQuantity()),
                 HttpStatus.OK);
+    }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deleteCart(@AuthenticationPrincipal CustomUserDetails userDetails){
+        cartService.deleteCart(userDetails.getId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
