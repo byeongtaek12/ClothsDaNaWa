@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.annotations.DynamicInsert;
 
+import com.example.clothsdanawa.common.BaseEntity;
 import com.example.clothsdanawa.store.common.StoreStatus;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @DynamicInsert
 @NoArgsConstructor
 @Getter
-public class Store extends Timestamped {
+public class Store extends BaseEntity {
 	/*
 	  컬럼 - 연관관계 컬럼을 제외한 컬럼을 정의합니다.
 	 */
