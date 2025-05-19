@@ -36,7 +36,7 @@ public class Order extends BaseEntity {
 	private OrderStatus orderStatus = OrderStatus.WAITING;
 
 	@Column(nullable = false)
-	private Long Point;
+	private Long point;
 
 	//
 	// @OneToOne
@@ -48,7 +48,10 @@ public class Order extends BaseEntity {
 	public Order(Long quantity, OrderStatus orderStatus, Long point) {
 		this.quantity = quantity;
 		this.orderStatus = orderStatus;
-		Point = point;
-		//this.cart = cart;
+		this.point = point;
+	}
+
+	public void updateStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 }
