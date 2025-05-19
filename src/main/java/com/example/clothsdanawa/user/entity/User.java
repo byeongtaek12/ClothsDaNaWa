@@ -1,6 +1,5 @@
 package com.example.clothsdanawa.user.entity;
 
-import com.example.clothsdanawa.auth.dto.AuthLoginRequestDto;
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
 import com.example.clothsdanawa.common.BaseEntity;
 
@@ -33,15 +32,15 @@ public class User extends BaseEntity {
 	private String address;
 
 	@Enumerated(EnumType.STRING)
-	private UserRole role;
+	private UserRole userRole;
 
 	@Builder
-	private User(String name, String email, String password, String address, UserRole role) {
+	private User(String name, String email, String password, String address, UserRole userRole) {
 		this.name=name;
 		this.email=email;
 		this.password=password;
 		this.address=address;
-		this.role=role;
+		this.userRole=userRole;
 	}
 
 	public static User from(AuthSignUpRequestDto authSignUpRequestDto) {
@@ -50,7 +49,7 @@ public class User extends BaseEntity {
 			.email(authSignUpRequestDto.getEmail())
 			.password(authSignUpRequestDto.getPassword())
 			.address(authSignUpRequestDto.getAddress())
-			.role(UserRole.valueOf(authSignUpRequestDto.getUserRole()))
+			.userRole(com.example.clothsdanawa.user.entity.UserRole.valueOf(authSignUpRequestDto.getUserRole()))
 			.build();
 	}
 }
