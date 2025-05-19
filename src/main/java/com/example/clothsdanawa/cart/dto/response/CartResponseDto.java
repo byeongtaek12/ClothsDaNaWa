@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@AllArgsConstructor
+
+@RequiredArgsConstructor
 public class CartResponseDto {
 
     private final Long cartId;

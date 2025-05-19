@@ -25,12 +25,12 @@ public class CartItem {
     private int quantity;
 
     //금액계산
-    public int getTotalprice() {
+    public int getTotalPrice() {
         return product.getPrice() * quantity;
     }
 
-    public int addQuantity(int quantity){
-        return this.quantity+quantity;
+    public void addQuantity(int quantity){
+        this.quantity += quantity;
     }
 
     public static CartItem of(Cart cart,Product product,int quantity){
@@ -39,5 +39,14 @@ public class CartItem {
         cartItem.product=product;
         cartItem.quantity=quantity;
         return cartItem;
+    }
+
+    public void updateQuantity(CartItem cartItem,int quantity) {
+
+        if (quantity == 0) {
+            cart.getCartItems().remove(cartItem);
+        }
+
+        this.quantity=quantity;
     }
 }

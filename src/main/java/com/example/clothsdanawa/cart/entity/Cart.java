@@ -10,9 +10,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "carts", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "store_id"})
-})
+@Table(name = "carts")
 public class Cart {
 
     @Id
@@ -22,7 +20,6 @@ public class Cart {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true)
     private User user;
-    //가게는 여러개의 장바구니를 가질 수 있음.
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
@@ -47,12 +44,12 @@ public class Cart {
     //장바구니 총합금액계산
     public void calculateTotalPrice() {
         totalPrice = cartItems.stream()
-                .mapToInt(CartItem::getTotalprice)
+                .mapToInt(CartItem::getTotalPrice)
                 .sum();
     }
 
     public void refreshExpiredAt() {
-        this.expiredAt=LocalDateTime.now().plusDays(1);
+        this.expiredAt = LocalDateTime.now().plusDays(1);
     }
 }
 
