@@ -15,13 +15,13 @@ public class UserResponseDto {
 	private String email;
 
 	private UserResponseDto(String name, String email) {
-		this.name=name;
-		this.email=email;
+		this.name = name;
+		this.email = email;
 	}
 
 	public static UserResponseDto from(User user) {
 		return UserResponseDto.builder()
-			.id(user.getUser_id())
+			.id(user.getUserId())
 			.name(user.getName())
 			.email(user.getEmail())
 			.build();

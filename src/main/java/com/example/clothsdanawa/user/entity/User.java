@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long user_id;
+	private Long userId;
 
 	private String name;
 
@@ -36,18 +36,18 @@ public class User extends BaseEntity {
 
 	@Builder
 	private User(String name, String email, String password, String address, UserRole userRole) {
-		this.name=name;
-		this.email=email;
-		this.password=password;
-		this.address=address;
-		this.userRole=userRole;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.address = address;
+		this.userRole = userRole;
 	}
 
-	public static User from(AuthSignUpRequestDto authSignUpRequestDto) {
+	public static User of(AuthSignUpRequestDto authSignUpRequestDto, String encodedPassword) {
 		return User.builder()
 			.name(authSignUpRequestDto.getName())
 			.email(authSignUpRequestDto.getEmail())
-			.password(authSignUpRequestDto.getPassword())
+			.password(encodedPassword)
 			.address(authSignUpRequestDto.getAddress())
 			.userRole(com.example.clothsdanawa.user.entity.UserRole.valueOf(authSignUpRequestDto.getUserRole()))
 			.build();
