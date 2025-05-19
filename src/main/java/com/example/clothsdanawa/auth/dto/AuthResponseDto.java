@@ -10,15 +10,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthResponseDto {
 	private Long id;
+	private String jwtToken;
 
 	@Builder
-	private AuthResponseDto(Long id) {
+	private AuthResponseDto(Long id, String jwtToken) {
 		this.id = id;
+		this.jwtToken = jwtToken;
 	}
 
-	public static AuthResponseDto from(User user) {
+	public static AuthResponseDto of(User user, String jwtToken) {
 		return AuthResponseDto.builder()
-			.id(user.getUser_id())
+			.id(user.getUserId())
+			.jwtToken(jwtToken)
 			.build();
 	}
 }
