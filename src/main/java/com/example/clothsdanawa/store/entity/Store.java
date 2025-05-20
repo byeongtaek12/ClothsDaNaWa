@@ -62,7 +62,10 @@ public class Store extends BaseEntity {
 	/*
 	  연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.
 	 */
-
+	public void addProduct(Product product) {
+		this.product.add(product);
+		product.setStore(this);
+	}
 	/*
 	  서비스 메소드 - 외부에서 엔티티를 수정할 메소드를 정의합니다. (단일 책임을 가지도록 주의합니다.)
 	 */
