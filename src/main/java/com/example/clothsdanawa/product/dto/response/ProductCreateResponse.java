@@ -7,8 +7,15 @@ import lombok.Getter;
  * 상품 등록 성공 시 응답 DTO
  */
 @Getter
-@AllArgsConstructor
 public class ProductCreateResponse {
+	private final Long productId;
 
-	private Long productId;
+	public ProductCreateResponse(Long productId) {
+		this.productId = productId;
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
 }
+

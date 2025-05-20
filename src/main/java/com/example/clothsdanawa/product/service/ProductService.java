@@ -1,5 +1,6 @@
 package com.example.clothsdanawa.product.service;
 
+import com.example.clothsdanawa.product.dto.response.ProductResponse;
 import com.example.clothsdanawa.product.entity.Product;
 import com.example.clothsdanawa.product.repository.ProductRepository;
 import com.example.clothsdanawa.store.entity.Store;
@@ -38,11 +39,19 @@ public class ProductService {
 	}
 
 	/**
+	 * 상품 ID로 상품 엔티티 조회 (내부 전용)
+	 */
+	private Product getProductEntityById(Long productId) {
+		return productRepository.findById(productId)
+			.orElseThrow(() -> new EntityNotFoundException("해당 상품을 찾을 수 없습니다."));
+	}
+
+	/**
 	 * 상품 정보 수정
 	 */
 	@Transactional
 	public void updateProduct(Long productId, String productName, int price, int stock) {
-		Product product = findProductById(productId);
+		Product product = getProductEntityById(productId); // 엔티티 반환 받기
 		product.update(productName, price, stock);
 	}
 
@@ -51,7 +60,7 @@ public class ProductService {
 	 */
 	@Transactional
 	public void deleteProduct(Long productId) {
-		Product product = findProductById(productId);
+		Product product = getProductEntityById(productId);
 		product.markAsDeleted();
 	}
 
@@ -67,16 +76,20 @@ public class ProductService {
 	 * 재고 차감 (낙관적 락 기반)
 	 */
 	@Transactional
-	public void decreaseStock(Long productId, int quantity) {
-		Product product = findProductById(productId);
+	public Product decreaseStock(Long productId, int quantity) {
+		Product product = getProductEntityById(productId);
 		product.decreaseStock(quantity);
+		return product;
 	}
 
 	/**
 	 * 상품 ID로 상품을 조회
 	 */
-	public Product findProductById(Long productId) {
-		return productRepository.findById(productId)
+	public ProductResponse findProductById(Long productId) {
+		Product product = productRepository.findById(productId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 상품을 찾을 수 없습니다."));
+		return new ProductResponse(product);
 	}
+
+
 }

@@ -1,10 +1,6 @@
-### 테스트용 스토어 등록
+### 0. 테스트용 Store 등록 (미리 실행할 것!)
 POST http://localhost:8080/test-store
-Content-Type: application/json
 
-{
-  "name": "테스트상점"
-}
 ### 1. 상품 등록
 POST http://localhost:8080/product
 Content-Type: application/json
@@ -20,7 +16,7 @@ Content-Type: application/json
 GET http://localhost:8080/product
 
 ### 3. 상품 단일 조회
-GET http://localhost:8080/product
+GET http://localhost:8080/product/1
 
 ### 4. 상품 수정
 PUT http://localhost:8080/product/1
