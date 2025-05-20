@@ -49,4 +49,11 @@ public class StoreServiceImpl implements StoreService {
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
 		return new StoreResponseDto(store);
 	}
+
+	@Transactional
+	@Override
+	public void closeStore(Long storeId) {
+		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
+		store.closeStore();
+	}
 }

@@ -18,4 +18,6 @@ public interface StoreService {
 	List<Store> getStoreList(StoreFilterRequestDto requestDto);
 
 	StoreResponseDto getStore(Long storeId);
+
+	void closeStore(Long storeId);
 }

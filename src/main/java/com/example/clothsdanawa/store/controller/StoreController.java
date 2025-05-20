@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,5 +52,13 @@ public class StoreController {
 	) {
 		StoreResponseDto responseDto = storeService.getStore(storeId);
 		return new ResponseEntity<>(responseDto, HttpStatus.OK);
+	}
+
+	@PatchMapping("/{storeId}")
+	public ResponseEntity<Void> closeStore(
+		@PathVariable Long storeId
+	) {
+		storeService.closeStore(storeId);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

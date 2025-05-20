@@ -69,4 +69,8 @@ public class Store extends BaseEntity {
 	public void approveStore() {
 		this.storeStatus = StoreStatus.OPEN;
 	}
+
+	public void closeStore() {
+		this.storeStatus = StoreStatus.CLOSED;
+	}
 }
