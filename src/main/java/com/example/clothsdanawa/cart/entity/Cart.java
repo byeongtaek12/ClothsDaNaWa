@@ -1,6 +1,6 @@
 package com.example.clothsdanawa.cart.entity;
 
-import com.example.clothsdanawa.user.User;
+import com.example.clothsdanawa.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 

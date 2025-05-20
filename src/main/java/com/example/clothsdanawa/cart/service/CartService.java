@@ -6,16 +6,16 @@ import com.example.clothsdanawa.cart.entity.Cart;
 import com.example.clothsdanawa.cart.entity.CartItem;
 import com.example.clothsdanawa.cart.repository.CartItemRepository;
 import com.example.clothsdanawa.cart.repository.CartRepository;
-import com.example.clothsdanawa.product.ProductRepository;
 import com.example.clothsdanawa.product.entity.Product;
-import com.example.clothsdanawa.user.User;
-import com.example.clothsdanawa.user.UserRepository;
+import com.example.clothsdanawa.product.repository.ProductRepository;
+import com.example.clothsdanawa.store.common.StoreStatus;
+import com.example.clothsdanawa.user.entity.User;
+import com.example.clothsdanawa.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.Optional;
 
 @Service
@@ -40,7 +40,7 @@ public class CartService {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> cartRepository.save(Cart.of(user)));
         //status OPEN 상태인 쇼핑몰만
-        if (!product.getStore().getStatus().equals("OPEN")) {
+        if (!product.getStore().getStoreStatus().equals(StoreStatus.OPEN)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "운영중인 쇼핑몰이 아닙니다.");
         }
         //장바구니 만료시간조회 만료시 장바구니비우기
