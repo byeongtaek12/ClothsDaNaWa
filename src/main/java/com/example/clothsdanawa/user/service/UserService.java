@@ -29,4 +29,18 @@ public class UserService {
 
 	}
 
+	// public UserUpdateResponseDto updateUser(CustomUserPrincipal customUserPrincipal,
+	// 	Long userId,UserUpdateRequestDto userUpdateRequestDto) {
+	//
+	// 	User findedUser = userRepository.findByEmailOrElseThrow(customUserPrincipal.getUsername());
+	//
+	// 	if (userId != findedUser.getUserId()) {
+	// 		throw new RuntimeException("본인만 수정이 가능합니다");
+	// 	}
+	//
+	// 	findedUser.updateUser(userUpdateRequestDto);
+	//
+	// 	return UserUpdateResponseDto
+	//
+	// }
 }

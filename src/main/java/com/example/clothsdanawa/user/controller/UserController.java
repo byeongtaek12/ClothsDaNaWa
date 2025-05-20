@@ -4,15 +4,11 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.clothsdanawa.user.dto.UserRequestDto;
 import com.example.clothsdanawa.user.dto.UserResponseDto;
-import com.example.clothsdanawa.user.dto.UserUpdateResponseDto;
 import com.example.clothsdanawa.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,11 +34,14 @@ public class UserController {
 
 	}
 
-	@PatchMapping("/{userId}")
-	public ResponseEntity<UserUpdateResponseDto> updateUser(
-		@PathVariable Long userId, @RequestBody UserRequestDto userRequestDto
-	) {
-
-	}
+	// @PatchMapping("/{userId}")
+	// public ResponseEntity<UserUpdateResponseDto> updateUser(
+	// 	@AuthenticationPrincipal CustomUserPrincipal customUserPrincipal,
+	// 	@PathVariable Long userId, @RequestBody UserUpdateRequestDto userUpdateRequestDto
+	// ) {
+	// 	return ResponseEntity.status(200).body(userService.updateUser(
+	// 		customUserPrincipal, userId, userUpdateRequestDto));
+	//
+	// }
 
 }

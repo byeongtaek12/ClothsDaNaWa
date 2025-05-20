@@ -2,6 +2,7 @@ package com.example.clothsdanawa.user.entity;
 
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
 import com.example.clothsdanawa.common.BaseEntity;
+import com.example.clothsdanawa.user.dto.UserUpdateRequestDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -51,5 +52,23 @@ public class User extends BaseEntity {
 			.address(authSignUpRequestDto.getAddress())
 			.userRole(com.example.clothsdanawa.user.entity.UserRole.valueOf(authSignUpRequestDto.getUserRole()))
 			.build();
+	}
+
+	public void updateUser(UserUpdateRequestDto userUpdateRequestDto) {
+		if (userUpdateRequestDto.getName() != null) {
+			this.name = userUpdateRequestDto.getName();
+		}
+
+		if (userUpdateRequestDto.getEmail() != null) {
+			this.email = userUpdateRequestDto.getEmail();
+		}
+
+		if (userUpdateRequestDto.getPassword() != null) {
+			this.password = userUpdateRequestDto.getPassword();
+		}
+
+		if (userUpdateRequestDto.getAddress() != null) {
+			this.address = userUpdateRequestDto.getAddress();
+		}
 	}
 }
