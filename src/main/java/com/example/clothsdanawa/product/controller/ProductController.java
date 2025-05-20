@@ -1,5 +1,7 @@
 package com.example.clothsdanawa.product.controller;
 
+import com.example.clothsdanawa.product.dto.request.ProductCreateRequest;
+import com.example.clothsdanawa.product.dto.request.ProductUpdateRequest;
 import com.example.clothsdanawa.product.entity.Product;
 import com.example.clothsdanawa.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +24,13 @@ public class ProductController {
 	 * 상품 등록 API
 	 */
 	@PostMapping
-	public Long createProduct(@RequestParam Long storeId,
-		@RequestParam String productName,
-		@RequestParam int price,
-		@RequestParam int stock) {
-		return productService.createProduct(storeId, productName, price, stock);
+	public Long createProduct(@RequestBody ProductCreateRequest request) {
+		return productService.createProduct(
+			request.getStoreId(),
+			request.getProductName(),
+			request.getPrice(),
+			request.getStock()
+		);
 	}
 
 	/**
@@ -34,10 +38,13 @@ public class ProductController {
 	 */
 	@PutMapping("/{productId}")
 	public void updateProduct(@PathVariable Long productId,
-		@RequestParam String productName,
-		@RequestParam int price,
-		@RequestParam int stock) {
-		productService.updateProduct(productId, productName, price, stock);
+		@RequestBody ProductUpdateRequest request) {
+		productService.updateProduct(
+			productId,
+			request.getProductName(),
+			request.getPrice(),
+			request.getStock()
+		);
 	}
 
 	/**
