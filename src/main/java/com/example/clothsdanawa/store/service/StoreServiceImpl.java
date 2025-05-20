@@ -36,7 +36,7 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	public List<Store> getPendingStore(StoreStatus status) {
-		return storeRepository.findAllByStoreStatusOrderByCreateAtAsc(status);
+		return storeRepository.findAllByStoreStatusOrderByCreatedAtAsc(status);
 	}
 
 	@Override

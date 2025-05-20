@@ -13,7 +13,7 @@ import com.example.clothsdanawa.store.entity.Store;
 public interface StoreRepository extends JpaRepository<Store, Long> {
 	Optional<Store> findByStoreId(Long storeId);
 
-	List<Store> findAllByStoreStatusOrderByCreateAtAsc(StoreStatus status);
+	List<Store> findAllByStoreStatusOrderByCreatedAtAsc(StoreStatus status);
 
 	default Store findByStoreIdOrElseThrow(Long storeId) {
 		return findByStoreId(storeId)
