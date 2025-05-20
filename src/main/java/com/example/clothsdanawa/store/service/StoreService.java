@@ -9,7 +9,7 @@ import com.example.clothsdanawa.store.dto.response.StoreResponseDto;
 import com.example.clothsdanawa.store.entity.Store;
 
 public interface StoreService {
-	void createStore(StoreCreateRequestDto requestDto);
+	void createStore(StoreCreateRequestDto requestDto, String email);
 
 	void approveStore(Long storeId);
 

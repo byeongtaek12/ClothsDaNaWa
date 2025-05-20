@@ -3,6 +3,9 @@ package com.example.clothsdanawa.store.dto.response;
 import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.entity.Store;
 
+import lombok.Builder;
+
+@Builder
 public class StoreResponseDto {
 	private Long storeId;
 	private String company;
