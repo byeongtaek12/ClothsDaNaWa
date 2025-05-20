@@ -33,7 +33,7 @@ public class Order extends BaseEntity {
 	private Long quantity;
 
 	@Column(nullable = false)
-	private int totalPrice;
+	private Long totalPrice;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
@@ -48,7 +48,7 @@ public class Order extends BaseEntity {
 
 	// todo : cart 넣어야함
 	@Builder
-	public Order(Long quantity, int totalPrice, OrderStatus orderStatus, Long point, Cart cart) {
+	public Order(Long quantity, Long totalPrice, OrderStatus orderStatus, Long point, Cart cart) {
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
 		this.orderStatus = orderStatus;
