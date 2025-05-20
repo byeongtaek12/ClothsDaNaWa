@@ -46,7 +46,6 @@ public class Order extends BaseEntity {
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
 
-	// todo : cart 넣어야함
 	@Builder
 	public Order(Long quantity, Long totalPrice, OrderStatus orderStatus, Long point, Cart cart) {
 		this.quantity = quantity;
