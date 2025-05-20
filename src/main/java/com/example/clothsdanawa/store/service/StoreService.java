@@ -19,5 +19,5 @@ public interface StoreService {
 
 	StoreResponseDto getStore(Long storeId);
 
-	void closeStore(Long storeId);
+	void closeStore(Long storeId, String email);
 }

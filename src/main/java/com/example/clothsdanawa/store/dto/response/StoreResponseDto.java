@@ -15,13 +15,16 @@ public class StoreResponseDto {
 	private Long userId;
 	private String name;
 
-	public StoreResponseDto(Store store) {
-		this.storeId = store.getStoreId();
-		this.company = store.getCompany();
-		this.storeStatus = store.getStoreStatus();
-		this.storeNumber = store.getStoreNumber();
-		this.address = store.getStoreNumber();
-		this.userId = store.getUser().getUserId();
-		this.name = store.getUser().getName();
+	public static StoreResponseDto from(Store store) {
+		return StoreResponseDto.builder()
+			.storeId(store.getStoreId())
+			.company(store.getCompany())
+			.storeStatus(store.getStoreStatus())
+			.storeNumber(store.getStoreNumber())
+			.address(store.getAddress())
+			.userId(store.getUser().getUserId())
+			.name(store.getUser().getName())
+			.build();
+
 	}
 }

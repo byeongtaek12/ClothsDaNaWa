@@ -62,7 +62,9 @@ public class StoreController {
 	public ResponseEntity<Void> closeStore(
 		@PathVariable Long storeId
 	) {
-		storeService.closeStore(storeId);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+		storeService.closeStore(storeId, email);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

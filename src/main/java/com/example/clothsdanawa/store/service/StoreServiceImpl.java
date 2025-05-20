@@ -55,13 +55,17 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public StoreResponseDto getStore(Long storeId) {
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
-		return new StoreResponseDto(store);
+		return StoreResponseDto.from(store);
 	}
 
 	@Transactional
 	@Override
-	public void closeStore(Long storeId) {
+	public void closeStore(Long storeId, String email) {
+		User ownerUser = userRepository.findByEmailOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
+		if(store.getUser() != ownerUser){
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+		}
 		store.closeStore();
 	}
 }
