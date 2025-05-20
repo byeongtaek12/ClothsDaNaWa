@@ -25,8 +25,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Stores")
 @DynamicInsert
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Store extends BaseEntity {
 	/*
 	  컬럼 - 연관관계 컬럼을 제외한 컬럼을 정의합니다.
