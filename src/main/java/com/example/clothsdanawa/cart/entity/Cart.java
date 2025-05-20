@@ -1,6 +1,7 @@
 package com.example.clothsdanawa.cart.entity;
 
 import com.example.clothsdanawa.user.User;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -13,44 +14,43 @@ import java.util.List;
 @Table(name = "carts")
 public class Cart {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", unique = true)
-    private User user;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", unique = true)
+	private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> cartItems = new ArrayList<>();
+	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CartItem> cartItems = new ArrayList<>();
 
-    private int totalPrice;
-    private LocalDateTime expiredAt;
+	private int totalPrice;
+	private LocalDateTime expiredAt;
 
+	public static Cart of(User user) {
+		Cart cart = new Cart();
+		cart.user = user;
+		cart.expiredAt = LocalDateTime.now().plusDays(1);
 
-    public static Cart of(User user) {
-        Cart cart = new Cart();
-        cart.user = user;
-        cart.expiredAt = LocalDateTime.now().plusDays(1);
+		return cart;
+	}
 
-        return cart;
-    }
+	//만료시간검증
+	public boolean isExpired() {
+		return this.expiredAt.isBefore(LocalDateTime.now());
+	}
 
-    //만료시간검증
-    public boolean isExpired() {
-        return this.expiredAt.isBefore(LocalDateTime.now());
-    }
+	//장바구니 총합금액계산
+	public void calculateTotalPrice() {
+		totalPrice = cartItems.stream()
+			.mapToInt(CartItem::getTotalPrice)
+			.sum();
+	}
 
-    //장바구니 총합금액계산
-    public void calculateTotalPrice() {
-        totalPrice = cartItems.stream()
-                .mapToInt(CartItem::getTotalPrice)
-                .sum();
-    }
-
-    public void refreshExpiredAt() {
-        this.expiredAt = LocalDateTime.now().plusDays(1);
-    }
+	public void refreshExpiredAt() {
+		this.expiredAt = LocalDateTime.now().plusDays(1);
+	}
 }
 
 

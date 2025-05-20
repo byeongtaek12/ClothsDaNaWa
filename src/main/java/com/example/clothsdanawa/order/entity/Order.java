@@ -2,6 +2,7 @@ package com.example.clothsdanawa.order.entity;
 
 import java.time.LocalTime;
 
+import com.example.clothsdanawa.cart.entity.Cart;
 import com.example.clothsdanawa.common.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -31,6 +32,9 @@ public class Order extends BaseEntity {
 	@Column(nullable = false)
 	private Long quantity;
 
+	@Column(nullable = false)
+	private int totalPrice;
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private OrderStatus orderStatus = OrderStatus.WAITING;
@@ -38,17 +42,18 @@ public class Order extends BaseEntity {
 	@Column(nullable = false)
 	private Long point;
 
-	//
-	// @OneToOne
-	// JoinColumn(name = "cart_id")
-	// private Cart cart;
+	@OneToOne
+	@JoinColumn(name = "cart_id")
+	private Cart cart;
 
 	// todo : cart 넣어야함
 	@Builder
-	public Order(Long quantity, OrderStatus orderStatus, Long point) {
+	public Order(Long quantity, int totalPrice, OrderStatus orderStatus, Long point, Cart cart) {
 		this.quantity = quantity;
+		this.totalPrice = totalPrice;
 		this.orderStatus = orderStatus;
 		this.point = point;
+		this.cart = cart;
 	}
 
 	public void updateStatus(OrderStatus orderStatus) {
