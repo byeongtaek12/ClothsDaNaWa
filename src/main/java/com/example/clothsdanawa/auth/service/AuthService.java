@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.example.clothsdanawa.auth.dto.AuthLoginRequestDto;
 import com.example.clothsdanawa.auth.dto.AuthResponseDto;
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
+import com.example.clothsdanawa.common.exception.BaseException;
+import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.common.jwt.JwtUtil;
 import com.example.clothsdanawa.user.entity.User;
 import com.example.clothsdanawa.user.repository.UserRepository;
@@ -23,7 +25,7 @@ public class AuthService {
 	public AuthResponseDto signup(AuthSignUpRequestDto authSignUpRequestDto) {
 
 		if (userRepository.existsByEmail(authSignUpRequestDto.getEmail())) {
-			throw new RuntimeException("이미 존재하는 이메일입니다");
+			throw new BaseException(ErrorCode.CONFLICT_EMAIL);
 		}
 
 		String encodedPassword = passwordEncoder.encode(authSignUpRequestDto.getPassword());
@@ -42,7 +44,7 @@ public class AuthService {
 
 		User findedUser = userRepository.findByEmailOrElseThrow(authLoginRequestDto.getEmail());
 		if (!passwordEncoder.matches(authLoginRequestDto.getPassword(), findedUser.getPassword())) {
-			throw new RuntimeException("비밀번호가 틀렸습니다");
+			throw new BaseException(ErrorCode.BAD_REQUEST_PASSWORD);
 		}
 
 		String jwtToken = jwtUtil.createToken(findedUser.getUserId(), findedUser.getName(), findedUser.getEmail(),
