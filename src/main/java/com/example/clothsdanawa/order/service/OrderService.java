@@ -112,6 +112,8 @@ public class OrderService {
 		Order order = orderRepository.findById(orderId)
 			.orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다."));
 
+		Cart cart = order.getCart();
+
 		// 중복 취소 예외
 		if (order.getOrderStatus() == OrderStatus.CANCELLED) {
 			throw new IllegalStateException("이미 취소된 주문입니다.");
@@ -121,6 +123,22 @@ public class OrderService {
 		if (order.getOrderStatus() == OrderStatus.COMPLETED) {
 			throw new IllegalStateException("배송 완료된 주문은 취소할 수 없습니다.");
 		}
+
+		// 포인트 반환
+		Long usedPoint = order.getTotalPrice();
+		Long point = order.getPoint();
+		Long newPoint = usedPoint + point;
+
+		order.updatePoint(newPoint);
+
+		// todo : 차감된 재고 복원
+		//
+		List<CartItem> cartItems = cart.getCartItems();
+		// for (CartItem item : cartItems) {
+		// 	Long productId = item.getProduct().getId();
+		// 	int quantity = item.getQuantity();
+		// 	productService.decreaseStock(productId, quantity);
+		// }
 
 		// 주문 취소 상태 변경 -> 취소 주문내역 조회 가능
 		order.updateStatus(OrderStatus.CANCELLED);
