@@ -1,6 +1,6 @@
 package com.example.clothsdanawa.store.dto.response;
 
-import com.example.clothsdanawa.store.common.StoreStatus;
+import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.entity.Store;
 
 public class StoreResponseDto {

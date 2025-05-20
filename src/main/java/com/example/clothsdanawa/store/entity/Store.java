@@ -1,12 +1,10 @@
 package com.example.clothsdanawa.store.entity;
 
-import java.util.List;
-
 import org.hibernate.annotations.DynamicInsert;
 
 import com.example.clothsdanawa.common.BaseEntity;
-import com.example.clothsdanawa.store.common.StoreStatus;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
+import com.example.clothsdanawa.user.entity.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,8 +15,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -57,15 +55,17 @@ public class Store extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "products", fetch = FetchType.LAZY)
-	private List<Product> product;
+	// @OneToMany(mappedBy = "products", fetch = FetchType.LAZY)
+	// private List<Product> product;
+
 	/*
 	  연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.
 	 */
-	public void addProduct(Product product) {
-		this.product.add(product);
-		product.setStore(this);
-	}
+	// public void addProduct(Product product) {
+	// 	this.product.add(product);
+	// 	product.setStore(this);
+	// }
+
 	/*
 	  서비스 메소드 - 외부에서 엔티티를 수정할 메소드를 정의합니다. (단일 책임을 가지도록 주의합니다.)
 	 */
