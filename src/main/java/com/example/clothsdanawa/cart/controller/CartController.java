@@ -4,7 +4,6 @@ import com.example.clothsdanawa.cart.dto.request.CartCreateRequestDto;
 import com.example.clothsdanawa.cart.dto.request.CartUpdateRequestDto;
 import com.example.clothsdanawa.cart.dto.response.CartResponseDto;
 import com.example.clothsdanawa.cart.service.CartService;
-import com.example.clothsdanawa.common.security.CustomUserPrincipal;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
