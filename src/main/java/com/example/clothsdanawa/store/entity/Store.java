@@ -4,12 +4,12 @@ import org.hibernate.annotations.DynamicInsert;
 
 import com.example.clothsdanawa.common.BaseEntity;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
+import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
 import com.example.clothsdanawa.user.entity.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -81,6 +81,18 @@ public class Store extends BaseEntity {
 
 	public void closeStore() {
 		this.storeStatus = StoreStatus.CLOSED;
+	}
+
+	public void setStore(StoreUpdateRequestDto storeUpdateRequestDto) {
+		if(storeUpdateRequestDto.getCompany() != null){
+			this.company = storeUpdateRequestDto.getCompany();
+		}
+		if(storeUpdateRequestDto.getAddress() != null){
+			this.company = storeUpdateRequestDto.getAddress();
+		}
+		if(storeUpdateRequestDto.getStoreNumber() != null){
+			this.storeNumber = storeUpdateRequestDto.getStoreNumber();
+		}
 	}
 
 	public static Store of(StoreCreateRequestDto requestDto) {
