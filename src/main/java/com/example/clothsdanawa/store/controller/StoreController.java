@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.clothsdanawa.common.security.CustomUserPrincipal;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
@@ -34,10 +34,11 @@ public class StoreController {
 
 	@PostMapping
 	public ResponseEntity<Void> createStore(
+		@AuthenticationPrincipal CustomUserPrincipal customUserPrincipal,
 		@RequestBody StoreCreateRequestDto requestDto
 	) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+
+		String email = customUserPrincipal.getUsername();
 
 		storeService.createStore(requestDto, email);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -45,11 +46,11 @@ public class StoreController {
 
 	@PutMapping("/{storeId}")
 	public ResponseEntity<Void> updateStore(
+		@AuthenticationPrincipal CustomUserPrincipal customUserPrincipal,
 		@RequestBody StoreUpdateRequestDto storeUpdateRequestDto,
 		@PathVariable Long storeId
 	) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+		String email = customUserPrincipal.getUsername();
 
 		storeService.updateStore(storeUpdateRequestDto, storeId, email);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -75,10 +76,10 @@ public class StoreController {
 
 	@PatchMapping("/{storeId}")
 	public ResponseEntity<Void> closeStore(
+		@AuthenticationPrincipal CustomUserPrincipal customUserPrincipal,
 		@PathVariable Long storeId
 	) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+		String email = customUserPrincipal.getUsername();
 
 		storeService.closeStore(storeId, email);
 		return new ResponseEntity<>(HttpStatus.OK);
