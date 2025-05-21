@@ -29,6 +29,7 @@ public enum ErrorCode {
 
 	// store (product에 필요 store에서 가져다 쓰시는거 권장)
 	STORE_NOT_FOUND(HttpStatus.NOT_FOUND,"STORE_001", "해당 스토어가 존재하지 않습니다."),
+	STORE_FORBIDDEN(HttpStatus.FORBIDDEN, "STORE_002", "스토어의 주인만 이용 가능합니다."),
 
 	// 공통 예외 (추가 가능)
 	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST,"COMMON_001", "잘못된 입력값입니다."), // 코드 정해주세요

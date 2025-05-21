@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.clothsdanawa.common.exception.BaseException;
+import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
 import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
@@ -59,7 +61,7 @@ public class StoreService {
 		User ownerUser = userRepository.findByEmailOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
 		if(store.getUser() != ownerUser){
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			throw new BaseException(ErrorCode.STORE_FORBIDDEN);
 		}
 		store.closeStore();
 	}
@@ -69,7 +71,7 @@ public class StoreService {
 		User ownerUser = userRepository.findByEmailOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
 		if(store.getUser() != ownerUser){
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			throw new BaseException(ErrorCode.STORE_FORBIDDEN);
 		}
 		store.setStore(storeUpdateRequestDto);
 	}
