@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import com.example.clothsdanawa.cart.entity.Cart;
 import com.example.clothsdanawa.cart.entity.CartItem;
 import com.example.clothsdanawa.cart.repository.CartRepository;
+import com.example.clothsdanawa.cart.service.CartService;
 import com.example.clothsdanawa.order.dto.OrderRequestDto;
 import com.example.clothsdanawa.order.dto.OrderResponseDto;
 import com.example.clothsdanawa.order.entity.Order;
 import com.example.clothsdanawa.order.entity.OrderStatus;
 import com.example.clothsdanawa.order.repository.OrderRepository;
 import com.example.clothsdanawa.product.service.ProductService;
+import com.example.clothsdanawa.user.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class OrderService {
 	private final OrderRepository orderRepository;
 	private final CartRepository cartRepository;
 	private final ProductService productService;
+	private final CartService cartService;
 
 	// 1. 주문 생성
 	public OrderResponseDto createOrder(Long cartId, OrderRequestDto orderRequestDto) {
@@ -61,12 +64,17 @@ public class OrderService {
 		Order order = Order.builder()
 			.quantity(totalQuantity)
 			.totalPrice(totalPrice)
+			.cartList(cartItems)
 			.orderStatus(OrderStatus.WAITING)
 			.point(afterPayment)
 			.cart(cart)
 			.build();
 
 		orderRepository.save(order);
+
+		// 주문생성 후 장바구니 삭제
+		// cartService.deleteCart(userId);
+		cartService.deleteCart(cart.getUser().getUserId());
 
 		return new OrderResponseDto(order, cart);
 	}
