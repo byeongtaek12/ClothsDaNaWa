@@ -41,12 +41,7 @@ public class CartItem {
         return cartItem;
     }
 
-    public void updateQuantity(CartItem cartItem,int quantity) {
-
-        if (quantity == 0) {
-            cart.getCartItems().remove(cartItem);
-        }
-
-        this.quantity=quantity;
+    public void updateQuantity(int quantity) {
+        this.quantity= quantity;
     }
 }

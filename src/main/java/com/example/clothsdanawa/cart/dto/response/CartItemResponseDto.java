@@ -16,10 +16,10 @@ public class CartItemResponseDto {
 
     public static CartItemResponseDto from(CartItem cartItem) {
         return new CartItemResponseDto(
-                cartItem.getProduct().getStore().getId(),
+                cartItem.getProduct().getStore().getStoreId(),
                 cartItem.getProduct().getStore().getCompany(),
                 cartItem.getProduct().getId(),
-                cartItem.getProduct().getName(),
+                cartItem.getProduct().getProductName(),
                 cartItem.getProduct().getPrice(),
                 cartItem.getQuantity()
         );
