@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +51,7 @@ public class User extends BaseEntity {
 			.email(authSignUpRequestDto.getEmail())
 			.password(encodedPassword)
 			.address(authSignUpRequestDto.getAddress())
-			.userRole(com.example.clothsdanawa.user.entity.UserRole.valueOf(authSignUpRequestDto.getUserRole()))
+			.userRole(UserRole.from(authSignUpRequestDto.getUserRole()))
 			.build();
 	}
 

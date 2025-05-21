@@ -3,8 +3,9 @@ package com.example.clothsdanawa.user.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.example.clothsdanawa.common.exception.BaseException;
+import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -14,10 +15,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	boolean existsByEmail(String email);
 
 	default User findByIdOrElseThrow(Long userId) {
-		return findById(userId).orElseThrow(() -> new UsernameNotFoundException("아이디를 가진 사용자가 존재하지 않습니다."));
+		return findById(userId).orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_USER_BY_ID));
 	}
 
 	default User findByEmailOrElseThrow(String email) {
-		return findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일을 가진 사용자가 존재하지 않습니다."));
+		return findByEmail(email).orElseThrow(() -> new BaseException(
+			ErrorCode.NOT_FOUND_USER_BY_EMAIL));
 	}
 }
