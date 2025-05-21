@@ -46,7 +46,7 @@ public class StoreController {
 		@RequestParam Long cursor,
 		@RequestParam(required = false) String keyword
 	) {
-		StoreFilterRequestDto requestDto = new StoreFilterRequestDto(cursor, keyword);
+		StoreFilterRequestDto requestDto = new StoreFilterRequestDto(cursor-1, keyword);
 		List<Store> storeList = storeService.getStoreList(requestDto);
 		return new ResponseEntity<>(storeList, HttpStatus.OK);
 	}
