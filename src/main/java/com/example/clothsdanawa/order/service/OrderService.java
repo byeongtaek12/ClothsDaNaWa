@@ -27,7 +27,7 @@ public class OrderService {
 	// 1. 주문 생성
 	public OrderResponseDto createOrder(Long cartId, OrderRequestDto orderRequestDto) {
 
-		if (orderRepository.findOrderByCartID(cartId).isPresent()) {
+		if (orderRepository.findOrderByCartId(cartId).isPresent()) {
 			throw new IllegalStateException("주문이 이미 생성되었습니다.");
 		} // 중복요청 확인
 

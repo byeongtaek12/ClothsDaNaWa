@@ -9,7 +9,7 @@ import com.example.clothsdanawa.cart.entity.Cart;
 import com.example.clothsdanawa.order.entity.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-	Optional<Order> findOrderByCartID(Long cartId);
+	Optional<Order> findOrderByCartId(Long cartId);
 
 	List<Order> findAllByCart(Cart cart);
 

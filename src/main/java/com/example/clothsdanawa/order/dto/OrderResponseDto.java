@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.example.clothsdanawa.cart.dto.response.CartResponseDto;
 import com.example.clothsdanawa.cart.entity.Cart;
 import com.example.clothsdanawa.cart.entity.CartItem;
 import com.example.clothsdanawa.order.entity.Order;
