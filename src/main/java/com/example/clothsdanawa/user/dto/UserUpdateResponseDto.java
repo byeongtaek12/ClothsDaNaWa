@@ -2,11 +2,13 @@ package com.example.clothsdanawa.user.dto;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
+import com.example.clothsdanawa.user.entity.User;
+
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class UserUpdateResponseDto {
 	private Long id;
 	private String name;
@@ -17,17 +19,16 @@ public class UserUpdateResponseDto {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	private UserUpdateResponseDto(String name, String email, String password, String address, String userRole,
-		LocalDateTime createdAt, LocalDateTime updatedAt) {
-
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.address = address;
-		this.userRole = userRole;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
+	public static UserUpdateResponseDto from(User user) {
+		return UserUpdateResponseDto.builder()
+			.id(user.getUserId())
+			.name(user.getName())
+			.email(user.getEmail())
+			.password(user.getPassword())
+			.address(user.getAddress())
+			.userRole(user.getUserRole().toString())
+			.createdAt(user.getCreatedAt())
+			.updatedAt(user.getUpdatedAt())
+			.build();
 	}
-
-	// public static UserUpdateResponseDto
 }
