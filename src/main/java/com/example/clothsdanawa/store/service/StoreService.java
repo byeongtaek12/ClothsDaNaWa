@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
-import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
+import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
 import com.example.clothsdanawa.store.dto.response.StoreResponseDto;
 import com.example.clothsdanawa.store.entity.Store;
+import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.repository.StoreRepository;
 import com.example.clothsdanawa.store.repository.StoreRepositoryQuery;
 import com.example.clothsdanawa.user.entity.User;
@@ -58,7 +58,7 @@ public class StoreService {
 	public void closeStore(Long storeId, String email) {
 		User ownerUser = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
-		if(store.getUser() != ownerUser){
+		if (store.getUser() != ownerUser) {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 		}
 		store.closeStore();
@@ -66,9 +66,9 @@ public class StoreService {
 
 	@Transactional
 	public void updateStore(StoreUpdateRequestDto storeUpdateRequestDto, Long storeId, String email) {
-		User ownerUser = userRepository.findByEmailOrElseThrow(email);
+		User ownerUser = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
-		if(store.getUser() != ownerUser){
+		if (store.getUser() != ownerUser) {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 		}
 		store.setStore(storeUpdateRequestDto);
