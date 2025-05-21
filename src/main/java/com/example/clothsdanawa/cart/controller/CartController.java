@@ -4,6 +4,7 @@ import com.example.clothsdanawa.cart.dto.request.CartCreateRequestDto;
 import com.example.clothsdanawa.cart.dto.request.CartUpdateRequestDto;
 import com.example.clothsdanawa.cart.dto.response.CartResponseDto;
 import com.example.clothsdanawa.cart.service.CartService;
+import com.example.clothsdanawa.common.security.CustomUserPrincipal;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,27 +24,27 @@ public class CartController {
     public ResponseEntity<CartResponseDto> createCart(@AuthenticationPrincipal CustomUserPrincipal userDetails,
                                                       @RequestBody @Valid CartCreateRequestDto requestDto) {
 
-        return new ResponseEntity<>(cartService.createCart(userDetails.getId(), requestDto.getProductId(), requestDto.getQuantity()),
+        return new ResponseEntity<>(cartService.createCart(userDetails.getUserId(), requestDto.getProductId(), requestDto.getQuantity()),
                 HttpStatus.CREATED);
     }
 
     //장바구니 조회(사용자꺼만)
     @GetMapping
     public ResponseEntity<CartResponseDto> findCartList(@AuthenticationPrincipal CustomUserPrincipal userDetails) {
-        return new ResponseEntity<>(cartService.findMyCart(userDetails.getId()),HttpStatus.OK);
+        return new ResponseEntity<>(cartService.findMyCart(userDetails.getUserId()),HttpStatus.OK);
     }
 
     //장바구니 수량변경 (0일때 삭제)
     @PatchMapping
     public ResponseEntity<CartResponseDto> updateCart(@AuthenticationPrincipal CustomUserPrincipal userDetails,
                                                       @RequestBody @Valid CartUpdateRequestDto requestDto){
-        return new ResponseEntity<>(cartService.updateCart(userDetails.getId(),requestDto.getCartItemId(),requestDto.getQuantity()),
+        return new ResponseEntity<>(cartService.updateCart(userDetails.getUserId(),requestDto.getCartItemId(),requestDto.getQuantity()),
                 HttpStatus.OK);
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteCart(@AuthenticationPrincipal CustomUserPrincipal userDetails){
-        cartService.deleteCart(userDetails.getId());
+        cartService.deleteCart(userDetails.getUserId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
