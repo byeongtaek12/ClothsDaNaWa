@@ -21,14 +21,14 @@ public class UserUpdateResponseDto {
 
 	public static UserUpdateResponseDto from(User user) {
 		return UserUpdateResponseDto.builder()
-			.id(user.getUserId())
-			.name(user.getName())
-			.email(user.getEmail())
-			.password(user.getPassword())
-			.address(user.getAddress())
-			.userRole(user.getUserRole().toString())
-			.createdAt(user.getCreatedAt())
-			.updatedAt(user.getUpdatedAt())
-			.build();
+				.id(user.getUserId())
+				.name(user.getName())
+				.email(user.getEmail())
+				.password(user.getPassword())
+				.address(user.getAddress())
+				.userRole(user.getUserRole().toString())
+				.createdAt(user.getCreatedAt())
+				.updatedAt(user.getUpdatedAt())
+				.build();
 	}
 }

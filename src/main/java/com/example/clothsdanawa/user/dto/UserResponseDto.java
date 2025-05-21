@@ -14,9 +14,9 @@ public class UserResponseDto {
 
 	public static UserResponseDto from(User user) {
 		return UserResponseDto.builder()
-			.id(user.getUserId())
-			.name(user.getName())
-			.email(user.getEmail())
-			.build();
+				.id(user.getUserId())
+				.name(user.getName())
+				.email(user.getEmail())
+				.build();
 	}
 }

@@ -1,12 +1,12 @@
 package com.example.clothsdanawa.auth.service;
 
+import com.example.clothsdanawa.common.jwt.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.clothsdanawa.auth.dto.AuthLoginRequestDto;
 import com.example.clothsdanawa.auth.dto.AuthResponseDto;
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
-import com.example.clothsdanawa.common.jwt.JwtUtil;
 import com.example.clothsdanawa.user.entity.User;
 import com.example.clothsdanawa.user.repository.UserRepository;
 
