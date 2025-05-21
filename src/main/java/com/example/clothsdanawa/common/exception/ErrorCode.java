@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-	// 공통 관련 오류
-
 	// 사용자 관련 오류
 	BAD_REQUEST_PASSWORD(HttpStatus.BAD_REQUEST, "USER_001", "패스워드가 틀렸습니다"),
 	BAD_REQUEST_USER_ROLE(HttpStatus.BAD_REQUEST, "USER_002", "존재하지 않는 userRole 입니다"),
