@@ -21,7 +21,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		response.getWriter().write(new ObjectMapper().writeValueAsString(ErrorResponse.of(
+		response.getWriter().write(new ObjectMapper().writeValueAsString(ErrorResponse.from(
 			ErrorCode.FORBIDDEN_BUT_LOGIN_OK)));
 	}
 }

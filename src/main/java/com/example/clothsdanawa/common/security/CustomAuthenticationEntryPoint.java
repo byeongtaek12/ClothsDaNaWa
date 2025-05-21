@@ -21,7 +21,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 		AuthenticationException authException) throws IOException, ServletException {
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		response.getWriter().write(new ObjectMapper().writeValueAsString(ErrorResponse.of(
+		response.getWriter().write(new ObjectMapper().writeValueAsString(ErrorResponse.from(
 			ErrorCode.UNAUTHORIZED_LOGIN_PLZ)));
 	}
 }
