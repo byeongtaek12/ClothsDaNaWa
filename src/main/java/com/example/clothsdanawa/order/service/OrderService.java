@@ -8,6 +8,8 @@ import com.example.clothsdanawa.cart.entity.Cart;
 import com.example.clothsdanawa.cart.entity.CartItem;
 import com.example.clothsdanawa.cart.repository.CartRepository;
 import com.example.clothsdanawa.cart.service.CartService;
+import com.example.clothsdanawa.common.exception.BaseException;
+import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.order.dto.OrderRequestDto;
 import com.example.clothsdanawa.order.dto.OrderResponseDto;
 import com.example.clothsdanawa.order.entity.Order;
@@ -31,11 +33,11 @@ public class OrderService {
 	public OrderResponseDto createOrder(Long cartId, OrderRequestDto orderRequestDto) {
 
 		if (orderRepository.findOrderByCartId(cartId).isPresent()) {
-			throw new IllegalStateException("주문이 이미 생성되었습니다.");
+			throw new BaseException(ErrorCode.ORDER_DUPLICATE_CREATION);
 		} // 중복요청 확인
 
 		Cart cart = cartRepository.findById(cartId).orElseThrow(() ->
-			new EntityNotFoundException("장바구니를 찾을 수 없습니다."));
+			new BaseException(ErrorCode.CART_NOT_FOUND));
 
 		// 장바구니 내역 가져오기
 		List<CartItem> cartItems = cart.getCartItems();
@@ -82,7 +84,7 @@ public class OrderService {
 	// 2. 주문 조회
 	public OrderResponseDto findOrder(Long id) {
 		Order order = orderRepository.findById(id).orElseThrow(() ->
-			new EntityNotFoundException("주문을 찾을 수 없습니다."));
+			new BaseException(ErrorCode.ORDER_NOT_FOUND));
 
 		Cart cart = order.getCart();
 
@@ -93,7 +95,7 @@ public class OrderService {
 	public String updateStatus(Long id, OrderStatus newStatus) {
 
 		Order order = orderRepository.findById(id)
-			.orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다."));
+			.orElseThrow(() -> new BaseException(ErrorCode.ORDER_NOT_FOUND));
 
 		// 상태 수정
 		order.updateStatus(newStatus);
@@ -118,18 +120,18 @@ public class OrderService {
 	// 4. 주문 요청 취소
 	public String cancelOrder(Long orderId) {
 		Order order = orderRepository.findById(orderId)
-			.orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다."));
+			.orElseThrow(() -> new BaseException(ErrorCode.ORDER_NOT_FOUND));
 
 		Cart cart = order.getCart();
 
 		// 중복 취소 예외
 		if (order.getOrderStatus() == OrderStatus.CANCELLED) {
-			throw new IllegalStateException("이미 취소된 주문입니다.");
+			throw new BaseException(ErrorCode.ALREADY_CANCELLED);
 		}
 
 		// 상태별 취소 예외
 		if (order.getOrderStatus() == OrderStatus.COMPLETED) {
-			throw new IllegalStateException("배송 완료된 주문은 취소할 수 없습니다.");
+			throw new BaseException(ErrorCode.ALREADY_DELIVERED);
 		}
 
 		// 포인트 반환

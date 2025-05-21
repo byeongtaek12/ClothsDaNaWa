@@ -29,6 +29,12 @@ public enum ErrorCode {
 	// store (product에 필요 store에서 가져다 쓰시는거 권장)
 	STORE_NOT_FOUND(HttpStatus.NOT_FOUND,"STORE_001", "해당 스토어가 존재하지 않습니다."),
 
+	// order
+	ORDER_NOT_FOUND(HttpStatus.NOT_FOUND,"ORDER_001", "해당 주문이 존재하지 않습니다."),
+	ORDER_DUPLICATE_CREATION(HttpStatus.BAD_REQUEST,"ORDER_002", "주문이 이미 생성되었습니다."),
+	ALREADY_CANCELLED(HttpStatus.BAD_REQUEST,"ORDER_002", "이미 취소된 주문입니다."),
+	ALREADY_DELIVERED(HttpStatus.BAD_REQUEST,"ORDER_002", "배송 완료된 주문은 취소할 수 없습니다."),
+
 	// 공통 예외 (추가 가능)
 	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST,"COMMON_001", "잘못된 입력값입니다."), // 코드 정해주세요
 	INTERNAL_SERVER_ERROR(HttpStatus.BAD_REQUEST,"COMMON_999", "서버 내부 오류가 발생했습니다."),
