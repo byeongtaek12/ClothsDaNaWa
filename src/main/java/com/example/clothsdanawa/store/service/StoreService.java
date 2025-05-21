@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
 import com.example.clothsdanawa.store.dto.response.StoreResponseDto;
 import com.example.clothsdanawa.store.entity.Store;
+import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.repository.StoreRepository;
 import com.example.clothsdanawa.store.repository.StoreRepositoryQuery;
 import com.example.clothsdanawa.user.entity.User;
@@ -28,7 +28,7 @@ public class StoreService {
 
 	@Transactional
 	public void createStore(StoreCreateRequestDto requestDto, String email) {
-		User user = userRepository.findByEmailOrElseThrow(email);
+		User user = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(email);
 		Store store = new Store(requestDto);
 		store.setUser(user);
 		storeRepository.save(store);
@@ -55,9 +55,9 @@ public class StoreService {
 
 	@Transactional
 	public void closeStore(Long storeId, String email) {
-		User ownerUser = userRepository.findByEmailOrElseThrow(email);
+		User ownerUser = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
-		if(store.getUser() != ownerUser){
+		if (store.getUser() != ownerUser) {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 		}
 		store.closeStore();
