@@ -17,6 +17,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +28,8 @@ import lombok.Setter;
 @DynamicInsert
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class Store extends BaseEntity {
 	/*
 	  컬럼 - 연관관계 컬럼을 제외한 컬럼을 정의합니다.
@@ -42,7 +46,7 @@ public class Store extends BaseEntity {
 	/*
 	  생성자 - 약속된 형태로만 생성가능하도록 합니다.
 	 */
-	public Store(StoreCreateRequestDto requestDto) {
+	private Store(StoreCreateRequestDto requestDto) {
 		this.company = requestDto.getCompany();
 		this.storeStatus = StoreStatus.PENDING;
 		this.storeNumber = requestDto.getStoreNumber();
@@ -77,5 +81,14 @@ public class Store extends BaseEntity {
 
 	public void closeStore() {
 		this.storeStatus = StoreStatus.CLOSED;
+	}
+
+	public static Store of(StoreCreateRequestDto requestDto) {
+		return Store.builder()
+			.company(requestDto.getCompany())
+			.storeStatus(StoreStatus.PENDING)
+			.storeNumber(requestDto.getStoreNumber())
+			.address(requestDto.getAddress())
+			.build();
 	}
 }

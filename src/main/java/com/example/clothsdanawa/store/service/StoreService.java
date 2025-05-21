@@ -29,7 +29,7 @@ public class StoreService {
 	@Transactional
 	public void createStore(StoreCreateRequestDto requestDto, String email) {
 		User user = userRepository.findByEmailOrElseThrow(email);
-		Store store = new Store(requestDto);
+		Store store = Store.of(requestDto);
 		store.setUser(user);
 		storeRepository.save(store);
 	}
