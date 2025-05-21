@@ -29,6 +29,8 @@ public class SecurityConfig {
 
 	private final JwtUtil jwtUtil;
 	private final CustomUserDetailsService userDetailsService;
+	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+	private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -45,9 +47,8 @@ public class SecurityConfig {
 			.anonymous(AbstractHttpConfigurer::disable) // 익명 객체 생성 비활성화
 			.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
 			.exceptionHandling((ex -> ex
-				.authenticationEntryPoint(((request,
-					response,
-					authException) -> response.sendError(401)))));
+				.authenticationEntryPoint(customAuthenticationEntryPoint)
+				.accessDeniedHandler(customAccessDeniedHandler)));
 		return http.build();
 	}
 
