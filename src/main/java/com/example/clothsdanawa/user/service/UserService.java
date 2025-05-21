@@ -26,7 +26,7 @@ public class UserService {
 
 	public List<UserResponseDto> getUser() {
 
-		return userRepository.findAll()
+		return userRepository.findAllByDeletedAtIsNull()
 			.stream()
 			.map(UserResponseDto::from)
 			.toList();
@@ -34,7 +34,7 @@ public class UserService {
 
 	public UserResponseDto getUserById(Long userId) {
 
-		return UserResponseDto.from(userRepository.findByIdOrElseThrow(userId));
+		return UserResponseDto.from(userRepository.findByUserIdAndDeletedAtIsNullOrElseThrow(userId));
 
 	}
 
@@ -42,7 +42,7 @@ public class UserService {
 	public UserUpdateResponseDto updateUser(CustomUserPrincipal customUserPrincipal,
 		Long userId, UserUpdateRequestDto userUpdateRequestDto) {
 
-		User findedUser = userRepository.findByIdOrElseThrow(customUserPrincipal.getUserId());
+		User findedUser = userRepository.findByUserIdAndDeletedAtIsNullOrElseThrow(customUserPrincipal.getUserId());
 
 		if (userId != findedUser.getUserId()) {
 			throw new BaseException(ErrorCode.FORBIDDEN_NOT_MINE);
@@ -55,5 +55,15 @@ public class UserService {
 		}
 		findedUser.updateUser(userUpdateRequestDto, userUpdateRequestDto.getPassword());
 		return UserUpdateResponseDto.of(findedUser, userUpdateRequestDto.getPassword());
+	}
+
+	@Transactional
+	public void deleteUser(CustomUserPrincipal customUserPrincipal, Long userId) {
+		User findedUser = userRepository.findByUserIdAndDeletedAtIsNullOrElseThrow(customUserPrincipal.getUserId());
+
+		if (userId != findedUser.getUserId()) {
+			throw new BaseException(ErrorCode.FORBIDDEN_NOT_MINE);
+		}
+		findedUser.softDelete();
 	}
 }
