@@ -3,9 +3,15 @@ package com.example.clothsdanawa.store.dto.response;
 import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.entity.Store;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class StoreResponseDto {
 	private Long storeId;
 	private String company;

@@ -32,10 +32,8 @@ public class StoreAdminController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Store>> getPendingStore(
-		@RequestParam StoreStatus status
-	) {
-		List<Store> storeList = storeService.getPendingStore(status);
+	public ResponseEntity<List<Store>> getPendingStore() {
+		List<Store> storeList = storeService.getPendingStore();
 		return new ResponseEntity<>(storeList, HttpStatus.OK);
 	}
 }

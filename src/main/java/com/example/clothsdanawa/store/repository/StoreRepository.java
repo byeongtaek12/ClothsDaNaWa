@@ -11,12 +11,17 @@ import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.entity.Store;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
-	Optional<Store> findByStoreId(Long storeId);
+	Optional<Store> findByStoreIdAndStoreStatus(Long storeId, StoreStatus storeStatus);
 
 	List<Store> findAllByStoreStatusOrderByCreatedAtAsc(StoreStatus status);
 
 	default Store findByStoreIdOrElseThrow(Long storeId) {
-		return findByStoreId(storeId)
+		return findByStoreIdAndStoreStatus(storeId, StoreStatus.OPEN)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+	}
+
+	default Store findPendingStore(Long storeId) {
+		return findByStoreIdAndStoreStatus(storeId, StoreStatus.PENDING)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 }

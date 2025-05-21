@@ -36,12 +36,12 @@ public class StoreService {
 
 	@Transactional
 	public void approveStore(Long storeId) {
-		Store pendingStore = storeRepository.findByStoreIdOrElseThrow(storeId);
+		Store pendingStore = storeRepository.findPendingStore(storeId);
 		pendingStore.approveStore();
 	}
 
-	public List<Store> getPendingStore(StoreStatus status) {
-		return storeRepository.findAllByStoreStatusOrderByCreatedAtAsc(status);
+	public List<Store> getPendingStore() {
+		return storeRepository.findAllByStoreStatusOrderByCreatedAtAsc(StoreStatus.PENDING);
 	}
 
 	public List<Store> getStoreList(StoreFilterRequestDto requestDto) {
