@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.clothsdanawa.common.security.CustomUserPrincipal;
 import com.example.clothsdanawa.user.dto.UserResponseDto;
+import com.example.clothsdanawa.user.dto.UserUpdateRequestDto;
+import com.example.clothsdanawa.user.dto.UserUpdateResponseDto;
+import com.example.clothsdanawa.user.entity.User;
 import com.example.clothsdanawa.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -29,18 +33,18 @@ public class UserService {
 
 	}
 
-	// public UserUpdateResponseDto updateUser(CustomUserPrincipal customUserPrincipal,
-	// 	Long userId,UserUpdateRequestDto userUpdateRequestDto) {
-	//
-	// 	User findedUser = userRepository.findByEmailOrElseThrow(customUserPrincipal.getUsername());
-	//
-	// 	if (userId != findedUser.getUserId()) {
-	// 		throw new RuntimeException("본인만 수정이 가능합니다");
-	// 	}
-	//
-	// 	findedUser.updateUser(userUpdateRequestDto);
-	//
-	// 	return UserUpdateResponseDto
-	//
-	// }
+	public UserUpdateResponseDto updateUser(CustomUserPrincipal customUserPrincipal,
+		Long userId, UserUpdateRequestDto userUpdateRequestDto) {
+
+		User findedUser = userRepository.findByIdOrElseThrow(customUserPrincipal.getUserId());
+
+		if (userId != findedUser.getUserId()) {
+			throw new RuntimeException("본인만 수정이 가능합니다");
+		}
+
+		findedUser.updateUser(userUpdateRequestDto);
+
+		return UserUpdateResponseDto.from(findedUser);
+
+	}
 }
