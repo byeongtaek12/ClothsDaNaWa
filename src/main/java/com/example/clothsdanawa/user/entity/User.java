@@ -55,7 +55,7 @@ public class User extends BaseEntity {
 			.build();
 	}
 
-	public void updateUser(UserUpdateRequestDto userUpdateRequestDto) {
+	public void updateUser(UserUpdateRequestDto userUpdateRequestDto, String encodedPassword) {
 		if (userUpdateRequestDto.getName() != null) {
 			this.name = userUpdateRequestDto.getName();
 		}
@@ -64,8 +64,8 @@ public class User extends BaseEntity {
 			this.email = userUpdateRequestDto.getEmail();
 		}
 
-		if (userUpdateRequestDto.getPassword() != null) {
-			this.password = userUpdateRequestDto.getPassword();
+		if (encodedPassword != null) {
+			this.password = encodedPassword;
 		}
 
 		if (userUpdateRequestDto.getAddress() != null) {
