@@ -1,5 +1,7 @@
 package com.example.clothsdanawa.product.entity;
 
+import com.example.clothsdanawa.common.exception.ErrorCode;
+import com.example.clothsdanawa.common.exception.GeneralException;
 import com.example.clothsdanawa.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -105,12 +107,12 @@ public class Product {
 	}
 
 	/**
-	 * 재고 감소
-	 * @param quantity 줄일 수량
+	 * 재고 차감
+	 * @param quantity 차감 수량
 	 */
 	public void decreaseStock(int quantity) {
 		if (this.stock < quantity) {
-			throw new IllegalArgumentException("재고가 부족합니다.");
+			throw new GeneralException(ErrorCode.OUT_OF_STOCK);
 		}
 		this.stock -= quantity;
 		this.updatedAt = LocalDateTime.now();
