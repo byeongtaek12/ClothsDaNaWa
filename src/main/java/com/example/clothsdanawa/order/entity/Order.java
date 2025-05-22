@@ -1,13 +1,14 @@
 package com.example.clothsdanawa.order.entity;
 
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.clothsdanawa.cart.entity.Cart;
-import com.example.clothsdanawa.cart.entity.CartItem;
 import com.example.clothsdanawa.common.BaseEntity;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -37,8 +38,9 @@ public class Order extends BaseEntity {
 	@Column(nullable = false)
 	private Long totalPrice;
 
-	@Column
-	private List<CartItem> cartList;
+	@ElementCollection
+	@CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
+	private List<OrderItemInfo> cartList = new ArrayList<>();
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
@@ -52,7 +54,7 @@ public class Order extends BaseEntity {
 	private Cart cart;
 
 	@Builder
-	public Order (Long quantity, Long totalPrice, List<CartItem> cartList, OrderStatus orderStatus, Long point, Cart cart) {
+	public Order (Long quantity, Long totalPrice, List<OrderItemInfo> cartList, OrderStatus orderStatus, Long point, Cart cart) {
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
 		this.cartList = cartList;

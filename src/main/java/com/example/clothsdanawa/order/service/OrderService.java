@@ -1,6 +1,7 @@
 package com.example.clothsdanawa.order.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.order.dto.OrderRequestDto;
 import com.example.clothsdanawa.order.dto.OrderResponseDto;
 import com.example.clothsdanawa.order.entity.Order;
+import com.example.clothsdanawa.order.entity.OrderItemInfo;
 import com.example.clothsdanawa.order.entity.OrderStatus;
 import com.example.clothsdanawa.order.repository.OrderRepository;
 import com.example.clothsdanawa.product.service.ProductService;
@@ -62,11 +64,20 @@ public class OrderService {
 			productService.decreaseStock(productId, quantity);
 		}
 
+		// 장바구니 내역 orderItemInfos으 정의
+		List<OrderItemInfo> orderItemInfos = cartItems.stream()
+			.map(item -> new OrderItemInfo(
+				item.getProduct().getProductName(),
+				item.getQuantity(),
+				item.getProduct().getPrice()
+			))
+			.collect(Collectors.toList());
+
 		// 주문 저장
 		Order order = Order.builder()
 			.quantity(totalQuantity)
 			.totalPrice(totalPrice)
-			.cartList(cartItems)
+			.cartList(orderItemInfos) // 장바구니 내역 저장
 			.orderStatus(OrderStatus.WAITING)
 			.point(afterPayment)
 			.cart(cart)
