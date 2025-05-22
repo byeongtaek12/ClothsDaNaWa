@@ -13,14 +13,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-	// 공통 관련 오류
-
 	// 사용자 관련 오류
-	BAD_REQUEST_PASSWORD(HttpStatus.BAD_REQUEST, "U001", "패스워드가 틀렸습니다"),
-	BAD_REQUEST_USER_ROLE(HttpStatus.BAD_REQUEST, "U002", "존재하지 않는 userRole 입니다"),
-	NOT_FOUND_USER_BY_EMAIL(HttpStatus.NOT_FOUND, "U002", "이메일을 가진 사용자를 찾을 수 없습니다."),
-	NOT_FOUND_USER_BY_ID(HttpStatus.NOT_FOUND, "U003", "아이디를 가진 사용자를 찾을 수 없습니다."),
-	CONFLICT_EMAIL(HttpStatus.CONFLICT, "U004", "이미 존재하는 이메일입니다"),
+	BAD_REQUEST_PASSWORD(HttpStatus.BAD_REQUEST, "USER_001", "패스워드가 틀렸습니다"),
+	BAD_REQUEST_USER_ROLE(HttpStatus.BAD_REQUEST, "USER_002", "존재하지 않는 userRole 입니다"),
+	FORBIDDEN_NOT_MINE(HttpStatus.FORBIDDEN, "USER_003", "본인이 아닌 경우 접근할 수 없습니다"),
+	NOT_FOUND_USER_BY_EMAIL(HttpStatus.NOT_FOUND, "USER_004", "이메일을 가진 사용자를 찾을 수 없습니다."),
+	NOT_FOUND_USER_BY_ID(HttpStatus.NOT_FOUND, "USER_005", "아이디를 가진 사용자를 찾을 수 없습니다."),
+	CONFLICT_EMAIL(HttpStatus.CONFLICT, "USER_006", "이미 존재하는 이메일입니다"),
 
 	// product
 	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND,"PRODUCT_001", "해당 상품을 찾을 수 없습니다."),

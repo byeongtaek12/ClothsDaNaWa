@@ -42,7 +42,7 @@ public class AuthService {
 
 	public AuthResponseDto login(AuthLoginRequestDto authLoginRequestDto) {
 
-		User findedUser = userRepository.findByEmailOrElseThrow(authLoginRequestDto.getEmail());
+		User findedUser = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(authLoginRequestDto.getEmail());
 		if (!passwordEncoder.matches(authLoginRequestDto.getPassword(), findedUser.getPassword())) {
 			throw new BaseException(ErrorCode.BAD_REQUEST_PASSWORD);
 		}

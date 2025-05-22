@@ -5,11 +5,13 @@ import java.io.IOException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.clothsdanawa.common.security.CustomUserDetailsService;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,28 +35,40 @@ public class JwtFilter extends OncePerRequestFilter {
 		// 	return;
 		// }
 
-		String bearerJwt = request.getHeader("Authorization");
+		try {
+			String bearerJwt = request.getHeader("Authorization");
 
-		if (bearerJwt == null || !bearerJwt.startsWith("Bearer ")) {
+			if (bearerJwt == null || !bearerJwt.startsWith("Bearer ")) {
+				filterChain.doFilter(request, response);
+				return;
+			}
+
+			String jwt = jwtUtil.substringToken(bearerJwt);
+			Claims claims = jwtUtil.extractClaims(jwt);
+
+			if (claims != null) {
+				String email = claims.get("email", String.class);
+				UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+				UsernamePasswordAuthenticationToken auth =
+					new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+				SecurityContextHolder.getContext().setAuthentication(auth);
+
+			}
+
 			filterChain.doFilter(request, response);
-			return;
+
+		} catch (JwtException | IllegalArgumentException e) {
+			log.error("JWT 처리 오류: {}", e.getMessage());
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "유효하지 않은 토큰");
+		} catch (UsernameNotFoundException e) {
+			log.error("존재하지 않는 사용자: {}", e.getMessage());
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "사용자를 찾을 수 없음");
+		} catch (Exception e) {
+			log.error("인증 처리 중 오류 발생", e);
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "서버 오류");
 		}
-
-		String jwt = jwtUtil.substringToken(bearerJwt);
-		Claims claims = jwtUtil.extractClaims(jwt);
-
-		if (claims != null) {
-			String email = claims.get("email", String.class);
-			UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-
-			UsernamePasswordAuthenticationToken auth =
-				new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-			SecurityContextHolder.getContext().setAuthentication(auth);
-
-		}
-
-		filterChain.doFilter(request, response);
 	}
 }
 

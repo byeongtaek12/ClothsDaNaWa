@@ -1,5 +1,7 @@
 package com.example.clothsdanawa.user.entity;
 
+import java.time.LocalDateTime;
+
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
 import com.example.clothsdanawa.common.BaseEntity;
 import com.example.clothsdanawa.user.dto.UserUpdateRequestDto;
@@ -36,6 +38,8 @@ public class User extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private UserRole userRole;
 
+	private LocalDateTime deletedAt = null;
+
 	@Builder
 	private User(String name, String email, String password, String address, UserRole userRole) {
 		this.name = name;
@@ -55,7 +59,7 @@ public class User extends BaseEntity {
 			.build();
 	}
 
-	public void updateUser(UserUpdateRequestDto userUpdateRequestDto) {
+	public void updateUser(UserUpdateRequestDto userUpdateRequestDto, String encodedPassword) {
 		if (userUpdateRequestDto.getName() != null) {
 			this.name = userUpdateRequestDto.getName();
 		}
@@ -64,12 +68,16 @@ public class User extends BaseEntity {
 			this.email = userUpdateRequestDto.getEmail();
 		}
 
-		if (userUpdateRequestDto.getPassword() != null) {
-			this.password = userUpdateRequestDto.getPassword();
+		if (encodedPassword != null) {
+			this.password = encodedPassword;
 		}
 
 		if (userUpdateRequestDto.getAddress() != null) {
 			this.address = userUpdateRequestDto.getAddress();
 		}
+	}
+
+	public void softDelete() {
+		this.deletedAt = LocalDateTime.now();
 	}
 }
