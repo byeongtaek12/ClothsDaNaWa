@@ -4,120 +4,90 @@ import com.example.clothsdanawa.order.dto.OrderRequestDto;
 import com.example.clothsdanawa.order.dto.OrderResponseDto;
 import com.example.clothsdanawa.order.entity.OrderStatus;
 import com.example.clothsdanawa.order.service.OrderService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Map;
 
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.time.LocalDateTime;
-
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(MockitoExtension.class)
-class OrderControllerTest {
+public class OrderControllerTest {
 
-	private MockMvc mockMvc;
-
-	@Mock
 	private OrderService orderService;
-
-	@InjectMocks
 	private OrderController orderController;
-
-	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@BeforeEach
 	void setUp() {
-		mockMvc = MockMvcBuilders.standaloneSetup(orderController).build();
+		orderService = mock(OrderService.class);
+		orderController = new OrderController(orderService);
 	}
 
-	// @Test
-	// void order_생성에_성공한다() throws Exception {
-	// 	// given
-	// 	OrderRequestDto requestDto = new OrderRequestDto(100L);
-	// 	LocalDateTime now = LocalDateTime.of(2024, 1, 1, 12, 0);
-	//
-	// 	OrderResponseDto responseDto = new OrderResponseDto(
-	// 		1L, 1L, 5L, null, 5000, 100L, now, OrderStatus.WAITING);
-	//
-	// 	when(orderService.createOrder(any(Long.class), any(OrderRequestDto.class))).thenReturn(responseDto);
-	//
-	// 	// when & then
-	// 	mockMvc.perform(post("/orders/{cartId}", 1L)
-	// 			.contentType(MediaType.APPLICATION_JSON)
-	// 			.content(objectMapper.writeValueAsString(requestDto)))
-	// 		.andExpect(status().isOk())
-	// 		.andExpect(jsonPath("$.orderId").value(1L))
-	// 		.andExpect(jsonPath("$.cartId").value(1L))
-	// 		.andExpect(jsonPath("$.quantity").value(5L))
-	// 		.andExpect(jsonPath("$.totalPrice").value(5000))
-	// 		.andExpect(jsonPath("$.point").value(100L))
-	// 		.andExpect(jsonPath("$.orderStatus").value("WAITING"));
-	// }
-	//
-	// @Test
-	// void 주문_상태_변경에_성공한다() throws Exception {
-	// 	// given
-	// 	Long orderId = 1L;
-	// 	OrderStatus status = OrderStatus.IN_DELIVERY;
-	// 	String message = "배송 중입니다.";
-	//
-	// 	when(orderService.updateStatus(orderId, status)).thenReturn(message);
-	//
-	// 	// when & then
-	// 	mockMvc.perform(patch("/orders/{orderId}/status", orderId)
-	// 			.param("status", status.name())
-	// 			.contentType(MediaType.APPLICATION_JSON))
-	// 		.andExpect(status().isOk())
-	// 		.andExpect(jsonPath("$.message").value(message));
-	// }
-	//
-	// @Test
-	// void 주문_조회에_성공한다() throws Exception {
-	// 	// given
-	// 	Long orderId = 1L;
-	// 	LocalDateTime now = LocalDateTime.of(2024, 1, 1, 12, 0);
-	//
-	// 	OrderResponseDto responseDto = new OrderResponseDto(
-	// 		orderId, 1L, 5L, null, 5000, now, OrderStatus.WAITING);
-	//
-	// 	when(orderService.findOrder(orderId)).thenReturn(responseDto);
-	//
-	// 	// when & then
-	// 	mockMvc.perform(get("/orders/{orderId}", orderId)
-	// 			.contentType(MediaType.APPLICATION_JSON))
-	// 		.andExpect(status().isOk())
-	// 		.andExpect(jsonPath("$.orderId").value(orderId))
-	// 		.andExpect(jsonPath("$.cartId").value(1L))
-	// 		.andExpect(jsonPath("$.quantity").value(5L))
-	// 		.andExpect(jsonPath("$.totalPrice").value(5000))
-	// 		.andExpect(jsonPath("$.point").value(100L))
-	// 		.andExpect(jsonPath("$.orderStatus").value("WAITING"));
-	// }
-	//
-	// @Test
-	// void 주문_취소에_성공한다() throws Exception {
-	// 	// given
-	// 	Long orderId = 1L;
-	// 	String message = "주문이 취소되었습니다.";
-	//
-	// 	when(orderService.cancelOrder(orderId)).thenReturn(message);
-	//
-	// 	// when & then
-	// 	mockMvc.perform(delete("/orders/{orderId}", orderId))
-	// 		.andExpect(status().isOk())
-	// 		.andExpect(jsonPath("$.message").value(message));
-	// }
+	@Test
+	void 주문_생성_요청이_정상적으로_처리된다() {
+		// given
+		Long cartId = 1L;
+		OrderRequestDto requestDto = new OrderRequestDto(1000);
+		OrderResponseDto responseDto = mock(OrderResponseDto.class);
+
+		when(orderService.createOrder(cartId, requestDto)).thenReturn(responseDto);
+
+		// when
+		var response = orderController.createOrder(cartId, requestDto);
+
+		// then
+		assertThat(response.getBody()).isEqualTo(responseDto);
+		verify(orderService).createOrder(cartId, requestDto);
+	}
+
+	@Test
+	void 주문_조회_요청이_정상적으로_처리된다() {
+		// given
+		Long orderId = 1L;
+		OrderResponseDto responseDto = mock(OrderResponseDto.class);
+
+		when(orderService.findOrder(orderId)).thenReturn(responseDto);
+
+		// when
+		var response = orderController.findOrder(orderId);
+
+		// then
+		assertThat(response.getBody()).isEqualTo(responseDto);
+		verify(orderService).findOrder(orderId);
+	}
+
+	@Test
+	void 주문_상태_변경_요청이_정상적으로_처리된다() {
+		// given
+		Long orderId = 1L;
+		OrderStatus newStatus = OrderStatus.IN_DELIVERY;
+		String expectedMessage = "배송 중입니다.";
+
+		when(orderService.updateStatus(orderId, newStatus)).thenReturn(expectedMessage);
+
+		// when
+		var response = orderController.updateStatus(orderId, newStatus);
+
+		// then
+		assertThat(response.getBody()).isEqualTo(Map.of("상태가 업데이트 되었습니다\n", expectedMessage));
+		verify(orderService).updateStatus(orderId, newStatus);
+	}
+
+	@Test
+	void 주문_취소_요청이_정상적으로_처리된다() {
+		// given
+		Long orderId = 1L;
+		String expectedMessage = "주문이 취소되었습니다.";
+
+		when(orderService.cancelOrder(orderId)).thenReturn(expectedMessage);
+
+		// when
+		var response = orderController.cancelOrder(orderId);
+
+		// then
+		assertThat(response.getBody()).isEqualTo(expectedMessage);
+		verify(orderService).cancelOrder(orderId);
+	}
 }
