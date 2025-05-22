@@ -58,7 +58,7 @@ public class StoreController {
 
 	@GetMapping
 	public ResponseEntity<List<Store>> getStoreList(
-		@RequestParam Long cursor,
+		@RequestParam(defaultValue = "0") Long cursor,
 		@RequestParam(required = false) String keyword
 	) {
 		StoreFilterRequestDto requestDto = new StoreFilterRequestDto(cursor-1, keyword);
