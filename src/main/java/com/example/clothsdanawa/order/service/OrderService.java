@@ -18,9 +18,7 @@ import com.example.clothsdanawa.order.entity.OrderItemInfo;
 import com.example.clothsdanawa.order.entity.OrderStatus;
 import com.example.clothsdanawa.order.repository.OrderRepository;
 import com.example.clothsdanawa.product.service.ProductService;
-import com.example.clothsdanawa.user.repository.UserRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -50,12 +48,12 @@ public class OrderService {
 			.sum();
 
 		// 총 금액 가져오기
-		Long totalPrice = (long)cart.getTotalPrice();
+		int totalPrice = cart.getTotalPrice();
 
 		// 포인트 차감
 		// (입력된 포인트) - (총액수) -> (남은 포인트)
-		Long point = orderRequestDto.getPoint();
-		Long afterPayment = (point - totalPrice);
+		int point = orderRequestDto.getPoint();
+		int afterPayment = (point - totalPrice);
 
 		// 상품 재고 차감
 		for (CartItem item : cartItems) {
@@ -89,7 +87,7 @@ public class OrderService {
 		// cartService.deleteCart(userId);
 		cartService.deleteCart(cart.getUser().getUserId());
 
-		return new OrderResponseDto(order, cart);
+		return new OrderResponseDto(order);
 	}
 
 	// 2. 주문 조회
@@ -97,9 +95,7 @@ public class OrderService {
 		Order order = orderRepository.findById(id).orElseThrow(() ->
 			new BaseException(ErrorCode.ORDER_NOT_FOUND));
 
-		Cart cart = order.getCart();
-
-		return new OrderResponseDto(order, cart);
+		return new OrderResponseDto(order);
 	}
 
 	// 3. 주문 상태 변경
@@ -133,8 +129,6 @@ public class OrderService {
 		Order order = orderRepository.findById(orderId)
 			.orElseThrow(() -> new BaseException(ErrorCode.ORDER_NOT_FOUND));
 
-		Cart cart = order.getCart();
-
 		// 중복 취소 예외
 		if (order.getOrderStatus() == OrderStatus.CANCELLED) {
 			throw new BaseException(ErrorCode.ALREADY_CANCELLED);
@@ -146,15 +140,15 @@ public class OrderService {
 		}
 
 		// 포인트 반환
-		Long usedPoint = order.getTotalPrice();
-		Long point = order.getPoint();
-		Long newPoint = usedPoint + point;
+		int usedPoint = order.getTotalPrice();
+		int point = order.getPoint();
+		int newPoint = usedPoint + point;
 
 		order.updatePoint(newPoint);
 
 		// todo : 차감된 재고 복원
 		//
-		List<CartItem> cartItems = cart.getCartItems();
+		// List<OrderItemInfo> cartItems = order.getCartList();
 		// for (CartItem item : cartItems) {
 		// 	Long productId = item.getProduct().getId();
 		// 	int quantity = item.getQuantity();

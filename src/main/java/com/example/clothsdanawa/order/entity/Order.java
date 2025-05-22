@@ -36,7 +36,7 @@ public class Order extends BaseEntity {
 	private Long quantity;
 
 	@Column(nullable = false)
-	private Long totalPrice;
+	private int totalPrice;
 
 	@ElementCollection
 	@CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
@@ -47,14 +47,14 @@ public class Order extends BaseEntity {
 	private OrderStatus orderStatus = OrderStatus.WAITING;
 
 	@Column(nullable = false)
-	private Long point;
+	private int point;
 
 	@OneToOne
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
 
 	@Builder
-	public Order (Long quantity, Long totalPrice, List<OrderItemInfo> cartList, OrderStatus orderStatus, Long point, Cart cart) {
+	public Order (Long quantity, int totalPrice, List<OrderItemInfo> cartList, OrderStatus orderStatus, int point, Cart cart) {
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
 		this.cartList = cartList;
@@ -67,7 +67,7 @@ public class Order extends BaseEntity {
 		this.orderStatus = orderStatus;
 	}
 
-	public void updatePoint(Long point) {
+	public void updatePoint(int point) {
 		this.point = point;
 	}
 }
