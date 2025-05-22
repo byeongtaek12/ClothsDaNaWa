@@ -38,7 +38,8 @@ public class SecurityConfig {
 			.sessionManagement(sm ->
 				sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/auth/**").permitAll()  // WHITE_LIST 느낌
+				.requestMatchers("/auth/**", "/oauth2/authorization/**",
+					"/login/oauth2/code/**").permitAll()  // WHITE_LIST 느낌
 				.requestMatchers(HttpMethod.GET, "/stores/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/users/**").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
