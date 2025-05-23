@@ -12,5 +12,5 @@ import com.example.clothsdanawa.product.entity.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	@Query("SELECT p FROM Product p WHERE p.productName LIKE %:keyword% AND p.deletedAt IS NULL")
-	List<Product> searchStoreByKeyword(String keyword);
+	List<Product> searchProductByKeyword(String keyword);
 }

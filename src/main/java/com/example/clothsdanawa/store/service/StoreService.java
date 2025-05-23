@@ -7,12 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clothsdanawa.common.exception.BaseException;
 import com.example.clothsdanawa.common.exception.ErrorCode;
-import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
-import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
+import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
 import com.example.clothsdanawa.store.dto.response.StoreResponseDto;
 import com.example.clothsdanawa.store.entity.Store;
+import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.repository.StoreRepository;
 import com.example.clothsdanawa.store.repository.StoreRepositoryQuery;
 import com.example.clothsdanawa.user.entity.User;
@@ -73,5 +73,4 @@ public class StoreService {
 		}
 		store.setStore(storeUpdateRequestDto);
 	}
-
 }
