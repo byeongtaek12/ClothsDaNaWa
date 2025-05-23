@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: ClothDanaWa
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+#Redis 실행법(로컬 개발용)
+#1.Docker 설치 후
+#2.프로젝트 루트에서 docker-compose up -d 입력 or 위 실행버튼눌러도 됨.
