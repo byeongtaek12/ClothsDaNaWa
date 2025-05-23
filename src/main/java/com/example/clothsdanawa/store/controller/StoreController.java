@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.clothsdanawa.common.security.CustomUserPrincipal;
+import com.example.clothsdanawa.redis.RedisService;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class StoreController {
 
 	private final StoreService storeService;
+	private final RedisService redisService;
 
 	@PostMapping
 	public ResponseEntity<Void> createStore(
@@ -58,10 +60,10 @@ public class StoreController {
 
 	@GetMapping
 	public ResponseEntity<List<Store>> getStoreList(
-		@RequestParam Long cursor,
+		@RequestParam(defaultValue = "0") Long cursor,
 		@RequestParam(required = false) String keyword
 	) {
-		StoreFilterRequestDto requestDto = new StoreFilterRequestDto(cursor-1, keyword);
+		StoreFilterRequestDto requestDto = new StoreFilterRequestDto(cursor - 1, keyword);
 		List<Store> storeList = storeService.getStoreList(requestDto);
 		return new ResponseEntity<>(storeList, HttpStatus.OK);
 	}
