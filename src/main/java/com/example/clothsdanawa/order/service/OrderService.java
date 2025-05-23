@@ -12,6 +12,8 @@ import com.example.clothsdanawa.order.dto.OrderResponseDto;
 import com.example.clothsdanawa.order.entity.Order;
 import com.example.clothsdanawa.order.entity.OrderStatus;
 import com.example.clothsdanawa.order.repository.OrderRepository;
+import com.example.clothsdanawa.product.dto.request.ProductStockRequest;
+import com.example.clothsdanawa.product.enums.StockOperationType;
 import com.example.clothsdanawa.product.service.ProductService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -54,7 +56,9 @@ public class OrderService {
 		for (CartItem item : cartItems) {
 			Long productId = item.getProduct().getId();
 			int quantity = item.getQuantity();
-			productService.decreaseStock(productId, quantity);
+
+			ProductStockRequest request = new ProductStockRequest(quantity, StockOperationType.DECREASE);
+			productService.updateStock(productId, request);
 		}
 
 		// 주문 저장
