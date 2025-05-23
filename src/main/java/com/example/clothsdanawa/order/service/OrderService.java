@@ -18,6 +18,8 @@ import com.example.clothsdanawa.order.entity.Order;
 import com.example.clothsdanawa.order.entity.OrderItemInfo;
 import com.example.clothsdanawa.order.entity.OrderStatus;
 import com.example.clothsdanawa.order.repository.OrderRepository;
+import com.example.clothsdanawa.product.dto.request.ProductStockRequest;
+import com.example.clothsdanawa.product.enums.StockOperationType;
 import com.example.clothsdanawa.product.service.ProductService;
 import com.example.clothsdanawa.user.entity.User;
 import com.example.clothsdanawa.user.repository.UserRepository;
@@ -73,7 +75,9 @@ public class OrderService {
 		for (CartItem item : cartItems) {
 			Long productId = item.getProduct().getId();
 			int quantity = item.getQuantity();
-			productService.decreaseStock(productId, quantity);
+
+			ProductStockRequest request = new ProductStockRequest(quantity, StockOperationType.DECREASE);
+			productService.updateStock(productId, request);
 		}
 
 		// 장바구니 내역 orderItemInfos으 정의

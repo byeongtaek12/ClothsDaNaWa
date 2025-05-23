@@ -23,9 +23,10 @@ public enum ErrorCode {
 	FORBIDDEN_NOT_CHANGE(HttpStatus.FORBIDDEN, "USER_007", "OAuth 유저는 비밀번호를 변경할 수 없습니다"),
 
 	// product
-	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "PRODUCT_001", "해당 상품을 찾을 수 없습니다."),
-	OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "stock_001", "재고가 부족합니다."),
-	// 이미 삭제된 상품입니다 추가
+	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND,"PRODUCT_001", "해당 상품을 찾을 수 없습니다."),
+	ALREADY_DELETED_PRODUCT(HttpStatus.BAD_REQUEST,"PRODUCT_002", "이미 삭제된 상품입니다."),
+	OUT_OF_STOCK(HttpStatus.BAD_REQUEST,"STOCK_001", "재고가 부족합니다."),
+	INVALID_STOCK_OPERATION( HttpStatus.BAD_REQUEST,"STOCK_002", "유효하지 않은 재고 조작 요청입니다."),
 
 	// store (product에 필요 store에서 가져다 쓰시는거 권장)
 	STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE_001", "해당 스토어가 존재하지 않습니다."),
