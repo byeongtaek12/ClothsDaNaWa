@@ -88,7 +88,4 @@ public class ProductService {
 		return new ProductResponse(product);
 	}
 
-	public List<Product> searchByKeyword(String keyword) {
-		return productRepository.searchStoreByKeyword(keyword);
-	}
 }

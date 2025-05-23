@@ -6,10 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.example.clothsdanawa.product.entity.Product;
-import com.example.clothsdanawa.product.service.ProductService;
+import com.example.clothsdanawa.product.repository.ProductRepository;
+import com.example.clothsdanawa.redis.RedisService;
 import com.example.clothsdanawa.search.dto.SearchResponseDto;
 import com.example.clothsdanawa.store.entity.Store;
-import com.example.clothsdanawa.store.service.StoreService;
+import com.example.clothsdanawa.store.repository.StoreRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,16 +18,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SearchService {
 
-	private final StoreService storeService;
-	private final ProductService productService;
+	private final StoreRepository storeRepository;
+	private final ProductRepository productRepository;
+	private final RedisService redisService;
 
 	public List<SearchResponseDto> searchAll(String keyword) {
+		//검색결과 레디스에 저장
+		redisService.incrementCount(keyword);
 
-		List<Store> stores = storeService.searchByKeyword(keyword);
-		List<Product> products = productService.searchByKeyword(keyword);
+		//검색결과 조회하기
+		List<Store> stores = storeRepository.searchStoreByKeyword(keyword);
+		List<Product> products = productRepository.searchStoreByKeyword(keyword);
 
 		List<SearchResponseDto> result = stores.stream().map(SearchResponseDto::from).collect(Collectors.toList());
-		List<SearchResponseDto> result2 = products.stream().map(SearchResponseDto::from).collect(Collectors.toList());
+		List<SearchResponseDto> result2 = products.stream().map(SearchResponseDto::from).toList();
 
 		result.addAll(result2);
 
