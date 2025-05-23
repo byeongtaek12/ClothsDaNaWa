@@ -97,11 +97,6 @@ public class User extends BaseEntity {
 		}
 	}
 
-	public void updateOAuth(String provider, String providerId) {
-		this.provider = provider;
-		this.providerId = providerId;
-	}
-
 	public void softDelete() {
 		this.deletedAt = LocalDateTime.now();
 	}
