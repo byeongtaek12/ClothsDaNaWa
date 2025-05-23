@@ -1,6 +1,7 @@
-### 0. [성공] 스토어 등록 (테스트용)
-# @no-cookie-jar
-POST http://localhost:8080/stores
+@accessToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwibmFtZSI6InVzZXIyIiwiZW1haWwiOiJ1c2VyMkBleGFtcGxlLmNvbSIsInVzZXJSb2xlIjoiT1dORVIiLCJleHAiOjE3NDc5MTIyNzMsImlhdCI6MTc0NzkwODY3M30.9K3L-O1ie8L2tRhv-n2yP5J_6tEZSaGcV9rVeB9kH7s
+
+### 1. [성공] 스토어 등록 (테스트용)
+POST http://localhost:8080/test-store
 Content-Type: application/json
 
 {
@@ -13,10 +14,11 @@ Content-Type: application/json
 ### 1. [성공] 상품 등록
 POST http://localhost:8080/product
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
   "storeId": 1,
-  "productName": "테스트 반팔",
+  "productName": "테스트 반팔2",
   "price": 12000,
   "stock": 10
 }
@@ -124,3 +126,4 @@ DELETE http://localhost:8080/product/1
 
 ### 14. [실패] 이미 삭제된 상품 다시 삭제 시도
 DELETE http://localhost:8080/product/1
+## 이미 삭제된 상품입니다 추가

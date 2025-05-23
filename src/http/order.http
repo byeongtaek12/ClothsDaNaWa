@@ -1,0 +1,40 @@
+@accessToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBleGFtcGxlLmNvbSIsInVzZXJSb2xlIjoiVVNFUiIsImV4cCI6MTc0NzkxMDQyMiwiaWF0IjoxNzQ3OTA2ODIyfQ.81JJCJsrkPaLI2OMA3GYpQmIecWXhwXaGWhueng7Gr8
+
+### 1. [성공] 주문 생성
+POST http://localhost:8080/orders/1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "point": 50000
+}
+
+### 1-1. [실패] 중복 주문 요청
+POST http://localhost:8080/orders/1
+Content-Type: application/json
+
+{
+  "point": 15000
+}
+
+### 2. [성공] 주문 조회
+GET http://localhost:8080/orders/1
+Authorization: Bearer {{accessToken}}
+
+### 2-1. [실패] 존재하지 않는 주문 조회
+GET http://localhost:8080/orders/999
+
+### 3. [성공] 주문 상태 변경 → 배송 중
+PATCH http://localhost:8080/orders/1?status=IN_DELIVERY
+
+### 3-1. [성공] 주문 상태 변경 → 배송 완료
+PATCH http://localhost:8080/orders/1?status=COMPLETED
+
+### 4. [성공] 주문 취소
+DELETE http://localhost:8080/orders/1
+
+### 4-1. [실패] 이미 취소된 주문 취소 시도
+DELETE http://localhost:8080/orders/1
+
+### 4-2. [실패] 배송 완료된 주문 취소 시도
+DELETE http://localhost:8080/orders/1

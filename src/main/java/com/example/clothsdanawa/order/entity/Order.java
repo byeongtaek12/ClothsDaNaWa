@@ -1,11 +1,15 @@
 package com.example.clothsdanawa.order.entity;
 
-import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.clothsdanawa.cart.entity.Cart;
 import com.example.clothsdanawa.common.BaseEntity;
+import com.example.clothsdanawa.user.entity.User;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,33 +37,38 @@ public class Order extends BaseEntity {
 	private Long quantity;
 
 	@Column(nullable = false)
-	private Long totalPrice;
+	private int totalPrice;
+
+	@ElementCollection
+	@CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
+	private List<OrderItemInfo> cartList = new ArrayList<>();
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private OrderStatus orderStatus = OrderStatus.WAITING;
 
 	@Column(nullable = false)
-	private Long point;
+	private int point;
 
 	@OneToOne
-	@JoinColumn(name = "cart_id")
-	private Cart cart;
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@Builder
-	public Order(Long quantity, Long totalPrice, OrderStatus orderStatus, Long point, Cart cart) {
+	public Order (Long quantity, int totalPrice, List<OrderItemInfo> cartList, OrderStatus orderStatus, int point, User user) {
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
+		this.cartList = cartList;
 		this.orderStatus = orderStatus;
 		this.point = point;
-		this.cart = cart;
+		this.user = user;
 	}
 
 	public void updateStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
-	public void updatePoint(Long point) {
+	public void updatePoint(int point) {
 		this.point = point;
 	}
 }
