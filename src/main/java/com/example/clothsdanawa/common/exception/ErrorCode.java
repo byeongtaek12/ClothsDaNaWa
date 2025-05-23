@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
+	// 공통 관련 오류
+
 	// 사용자 관련 오류
 	BAD_REQUEST_PASSWORD(HttpStatus.BAD_REQUEST, "USER_001", "패스워드가 틀렸습니다"),
 	BAD_REQUEST_USER_ROLE(HttpStatus.BAD_REQUEST, "USER_002", "존재하지 않는 userRole 입니다"),
@@ -23,15 +25,17 @@ public enum ErrorCode {
 
 	// product
 	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND,"PRODUCT_001", "해당 상품을 찾을 수 없습니다."),
-	OUT_OF_STOCK(HttpStatus.BAD_REQUEST,"stock_001", "재고가 부족합니다."),
-	// 이미 삭제된 상품입니다 추가
+	ALREADY_DELETED_PRODUCT(HttpStatus.BAD_REQUEST,"PRODUCT_002", "이미 삭제된 상품입니다."),
+	OUT_OF_STOCK(HttpStatus.BAD_REQUEST,"STOCK_001", "재고가 부족합니다."),
+	INVALID_STOCK_OPERATION( HttpStatus.BAD_REQUEST,"STOCK_002", "유효하지 않은 재고 조작 요청입니다."),
 
 	// store (product에 필요 store에서 가져다 쓰시는거 권장)
 	STORE_NOT_FOUND(HttpStatus.NOT_FOUND,"STORE_001", "해당 스토어가 존재하지 않습니다."),
 
 	// 공통 예외 (추가 가능)
 	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST,"COMMON_001", "잘못된 입력값입니다."), // 코드 정해주세요
-	INTERNAL_SERVER_ERROR(HttpStatus.BAD_REQUEST,"COMMON_999", "서버 내부 오류가 발생했습니다."),
+	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"COMMON_999", "서버 내부 오류가 발생했습니다."),
+
 	//cart
 	CART_NOT_FOUND(HttpStatus.NOT_FOUND, "CART_001","장바구니가 없습니다."),
 	CART_EMPTY(HttpStatus.NO_CONTENT, "CART_002","장바구니가 비어있습니다."),
