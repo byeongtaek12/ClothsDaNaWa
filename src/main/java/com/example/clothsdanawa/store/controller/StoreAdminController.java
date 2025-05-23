@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.clothsdanawa.store.dto.response.VoidResponse;
 import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.entity.Store;
 import com.example.clothsdanawa.store.service.StoreService;
@@ -24,11 +25,11 @@ public class StoreAdminController {
 	private final StoreService storeService;
 
 	@PatchMapping("/{storeId}/approve")
-	public ResponseEntity<Void> approveStore(
+	public ResponseEntity<VoidResponse> approveStore(
 		@PathVariable Long storeId
 	) {
 		storeService.approveStore(storeId);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(VoidResponse.from("승인 완료"), HttpStatus.OK);
 	}
 
 	@GetMapping
