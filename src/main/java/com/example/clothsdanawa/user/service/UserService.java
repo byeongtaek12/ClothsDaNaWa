@@ -49,6 +49,9 @@ public class UserService {
 		}
 
 		if (userUpdateRequestDto.getPassword() != null) {
+			if (findedUser.getPassword() == null) {
+				throw new BaseException(ErrorCode.FORBIDDEN_NOT_CHANGE);
+			}
 			String encodedPassword = passwordEncoder.encode(userUpdateRequestDto.getPassword());
 
 			findedUser.updateUser(userUpdateRequestDto, encodedPassword);
