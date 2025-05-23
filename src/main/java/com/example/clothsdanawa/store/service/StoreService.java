@@ -7,12 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clothsdanawa.common.exception.BaseException;
 import com.example.clothsdanawa.common.exception.ErrorCode;
-import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
-import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
+import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
 import com.example.clothsdanawa.store.dto.response.StoreResponseDto;
 import com.example.clothsdanawa.store.entity.Store;
+import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.repository.StoreRepository;
 import com.example.clothsdanawa.store.repository.StoreRepositoryQuery;
 import com.example.clothsdanawa.user.entity.User;
@@ -58,7 +58,7 @@ public class StoreService {
 	public void closeStore(Long storeId, String email) {
 		User ownerUser = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
-		if(store.getUser() != ownerUser){
+		if (store.getUser() != ownerUser) {
 			throw new BaseException(ErrorCode.STORE_FORBIDDEN);
 		}
 		store.closeStore();
@@ -68,13 +68,9 @@ public class StoreService {
 	public void updateStore(StoreUpdateRequestDto storeUpdateRequestDto, Long storeId, String email) {
 		User ownerUser = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
-		if(store.getUser() != ownerUser){
+		if (store.getUser() != ownerUser) {
 			throw new BaseException(ErrorCode.STORE_FORBIDDEN);
 		}
 		store.setStore(storeUpdateRequestDto);
-	}
-
-	public List<Store> searchByKeyword(String keyword) {
-		return storeRepository.searchStoreByKeyword(keyword);
 	}
 }
