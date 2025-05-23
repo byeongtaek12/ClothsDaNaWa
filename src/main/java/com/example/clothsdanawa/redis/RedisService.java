@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
+import com.example.clothsdanawa.search.SearchRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -16,37 +18,42 @@ import lombok.RequiredArgsConstructor;
 public class RedisService {
 
 	private final RedisTemplate<String, String> redisTemplate;
+	private final SearchRepository searchRepository;
 
-	private static final String TODAY_HOT_KEYWORDS = "hot_keywords:" + LocalDate.now();
+	private String getTodayKey() {
+		return "hot_keywords:" + LocalDate.now();
+	}
 
 	public void incrementCount(String keyword) {
+
 		//입력된 값이 있는지 검증
 		if (keyword == null || keyword.isBlank())
 			return;
-		//키워드 : score 값 저장
-		//입력된 keyword 값 +1
-		redisTemplate.opsForZSet().incrementScore(TODAY_HOT_KEYWORDS, keyword, 1);
 
-		//해당 키가 없을 경우에만 만료시간
-		if (!redisTemplate.hasKey(TODAY_HOT_KEYWORDS)) {
-			redisTemplate.expire(TODAY_HOT_KEYWORDS, Duration.ofDays(1));
+		//해당 키가 없을 경우에만 만료시간지정
+		String redisKey = getTodayKey();
+		if (!redisTemplate.hasKey(redisKey)) {
+			redisTemplate.expire(redisKey, Duration.ofHours(30));
 		}
-
-		Double score = redisTemplate.opsForZSet().score(TODAY_HOT_KEYWORDS, keyword);
-
-		System.out.println(keyword + "의 검색 횟수 :" + score);
+		//입력된 keyword 값 +1
+		//키워드 : score 값 저장
+		redisTemplate.opsForZSet().incrementScore(redisKey, keyword, 1);
 
 	}
 
-	//인기검색어 top10 가져오기
+	//인기검색어 top10 가져오기 //현재날짜기준
 	public List<String> getTop10Keywords() {
+		String redisKey = getTodayKey();
+
 		Set<ZSetOperations.TypedTuple<String>> topKeywords = redisTemplate.opsForZSet()
-			.reverseRangeWithScores(TODAY_HOT_KEYWORDS, 0, 9);
+			.reverseRangeWithScores(redisKey, 0, 9);
+		
 		if (topKeywords == null)
 			return List.of();
 
 		return topKeywords.stream()
-			.map(rank -> rank.getValue() + " : " + rank.getScore() + "회").toList();
+			.map(rank -> rank.getValue() + " : " + rank.getScore() + "회")
+			.toList();
 
 	}
 }
