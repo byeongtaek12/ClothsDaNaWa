@@ -119,6 +119,15 @@ public class Product {
 	}
 
 	/**
+	 * 재고 증가
+	 * @param quantity 추가할 수량
+	 */
+	public void increaseStock(int quantity) {
+		this.stock += quantity;
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	/**
 	 * soft delete 처리
 	 */
 	public void markAsDeleted() {

@@ -2,8 +2,10 @@ package com.example.clothsdanawa.product.service;
 
 import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.common.exception.GeneralException;
+import com.example.clothsdanawa.product.dto.request.ProductStockRequest;
 import com.example.clothsdanawa.product.dto.response.ProductResponse;
 import com.example.clothsdanawa.product.entity.Product;
+import com.example.clothsdanawa.product.enums.StockOperationType;
 import com.example.clothsdanawa.product.repository.ProductRepository;
 import com.example.clothsdanawa.store.entity.Store;
 import com.example.clothsdanawa.store.repository.StoreRepository;
@@ -68,14 +70,29 @@ public class ProductService {
 	}
 
 	/**
-	 * 재고 차감
+	 * 상품 재고 변경
+	 * 재고 변경 타입(INCREASE 또는 DECREASE)에 따라 수량을 증감시킵니다.
+	 * 낙관적 락(@Version)기반
+	 *
+	 * @param productId 재고를 변경할 상품의 ID
+	 * @param request 재고 변경 요청 DTO (quantity, type)
+	 * @return 변경된 상품 엔티티
+	 * @throws GeneralException PRODUCT_NOT_FOUND: 해당 상품이 존재하지 않을 경우
+	 * @throws GeneralException OUT_OF_STOCK: 재고 수량이 부족한 경우 (DECREASE 시)
 	 */
 	@Transactional
-	public Product decreaseStock(Long productId, int quantity) {
+	public Product updateStock(Long productId, ProductStockRequest request) {
 		Product product = getProductEntityById(productId);
-		product.decreaseStock(quantity);
+		int quantity = request.getQuantity();
+
+		if (request.getType() == StockOperationType.INCREASE) {
+			product.increaseStock(quantity);
+		} else {
+			product.decreaseStock(quantity);
+		}
 		return product;
 	}
+
 
 	/**
 	 * 상품 단건 조회 (DTO 변환)
