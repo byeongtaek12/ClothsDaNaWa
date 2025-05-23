@@ -2,6 +2,8 @@ package com.example.clothsdanawa.user.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
 import com.example.clothsdanawa.common.BaseEntity;
 import com.example.clothsdanawa.user.dto.UserUpdateRequestDto;
@@ -35,17 +37,24 @@ public class User extends BaseEntity {
 
 	private String address;
 
+	private String provider;
+
+	private String providerId;
+
 	@Enumerated(EnumType.STRING)
 	private UserRole userRole;
 
 	private LocalDateTime deletedAt = null;
 
 	@Builder
-	private User(String name, String email, String password, String address, UserRole userRole) {
+	private User(String name, String email, String password, String address, String provider, String providerId,
+		UserRole userRole) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.address = address;
+		this.provider = provider;
+		this.providerId = providerId;
 		this.userRole = userRole;
 	}
 
@@ -56,6 +65,17 @@ public class User extends BaseEntity {
 			.password(encodedPassword)
 			.address(authSignUpRequestDto.getAddress())
 			.userRole(UserRole.from(authSignUpRequestDto.getUserRole()))
+			.build();
+	}
+
+	public static User createOauthUser(OAuth2User oAuth2User, String email, String provider, String providerId,
+		String userRole) {
+		return User.builder()
+			.name(oAuth2User.getName())
+			.email(email)
+			.provider(provider)
+			.providerId(providerId)
+			.userRole(UserRole.from(userRole))
 			.build();
 	}
 

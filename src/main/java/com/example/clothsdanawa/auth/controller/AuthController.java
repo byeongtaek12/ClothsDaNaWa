@@ -11,6 +11,7 @@ import com.example.clothsdanawa.auth.dto.AuthResponseDto;
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
 import com.example.clothsdanawa.auth.service.AuthService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -21,7 +22,7 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<AuthResponseDto> signup(@RequestBody AuthSignUpRequestDto authSignUpRequestDto) {
+	public ResponseEntity<AuthResponseDto> signup(@Valid @RequestBody AuthSignUpRequestDto authSignUpRequestDto) {
 
 		return ResponseEntity.status(201).body(authService.signup(authSignUpRequestDto));
 
