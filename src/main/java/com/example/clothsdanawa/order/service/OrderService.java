@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clothsdanawa.cart.entity.Cart;
 import com.example.clothsdanawa.cart.entity.CartItem;
@@ -30,6 +31,7 @@ public class OrderService {
 	private final CartService cartService;
 
 	// 1. 주문 생성
+	@Transactional
 	public OrderResponseDto createOrder(Long cartId, OrderRequestDto orderRequestDto) {
 
 		if (orderRepository.findOrderByCartId(cartId).isPresent()) {

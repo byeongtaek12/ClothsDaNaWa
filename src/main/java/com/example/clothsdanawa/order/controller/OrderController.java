@@ -36,23 +36,23 @@ public class OrderController {
 	}
 
 	// todo : 2. 주문 조회
-	@GetMapping("/{id}")
+	@GetMapping("/{orderId}")
 	public ResponseEntity<OrderResponseDto> findOrder(@PathVariable Long orderId) {
 		return ResponseEntity.ok(orderService.findOrder(orderId));
 	}
 
 	// todo : 3. 주문 상태 변경
-	@PatchMapping("/{id}")
+	@PatchMapping("/{orderId}")
 	public ResponseEntity<Map<String, String>> updateStatus(
 		@PathVariable Long orderId,
 		@RequestParam OrderStatus status
 	) {
 		String message = orderService.updateStatus(orderId, status);
-		return ResponseEntity.ok(Map.of("상태가 업데이트 되었습니다\n", message));
+		return ResponseEntity.ok(Map.of("상태가 업데이트 되었습니다", message));
 	}
 
 	// todo : 4. 주문 요청 취소
-	@DeleteMapping("/{Id}")
+	@DeleteMapping("/{orderId}")
 	public ResponseEntity<String> cancelOrder(@PathVariable Long orderId) {
 		String message = orderService.cancelOrder(orderId);
 		return ResponseEntity.ok(message);
