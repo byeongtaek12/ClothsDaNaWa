@@ -10,6 +10,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class OrderRequestDto {
 
-	private final Long point;
+	private final int point;
 
 }

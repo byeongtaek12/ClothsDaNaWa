@@ -1,0 +1,10 @@
+@baseUrl = http://localhost:8080
+@accessToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwibmFtZSI6InVzZXIzIiwiZW1haWwiOiJ1c2VyM0BleGFtcGxlLmNvbSIsInVzZXJSb2xlIjoiQURNSU4iLCJleHAiOjE3NDc5MTIzMDYsImlhdCI6MTc0NzkwODcwNn0.zcfm-Cpw3a3XopEeQUlkWHAqY9wuIlNhozmlXijZi-k
+
+### 1. [성공] 승인 대기 중인 스토어 목록 조회
+GET {{baseUrl}}/admin/stores
+Authorization: Bearer {{accessToken}}
+
+### 2. [성공] 특정 스토어 승인
+PATCH {{baseUrl}}/admin/stores/1/approve
+Authorization: Bearer {{accessToken}}

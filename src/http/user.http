@@ -1,0 +1,31 @@
+### 1. [성공] 전체 사용자 목록 조회
+GET http://localhost:8080/users
+
+### 2. [성공] 특정 사용자 조회
+GET http://localhost:8080/users/1
+
+### 3. [성공] 사용자 정보 수정
+PATCH http://localhost:8080/users/1
+Content-Type: application/json
+Authorization: Bearer 1bdebbbc0463058726aafadd5c6375f8def625ecdd94c1d1936acb4eb393fbb7bc4cfb54744856e6e72b9ca05cf7ba16bc6fc6b96d3353ead97fb5c45f00c6b1
+
+{
+  "username": "user1",
+  "email": "user1@example.com"
+}
+
+### 3-1. [실패] 인증 없이 사용자 수정 시도
+PATCH http://localhost:8080/users/1
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "email": "user1@example.com"
+}
+
+### 4. [성공] 사용자 삭제
+DELETE http://localhost:8080/users/1
+Authorization: Bearer 1bdebbbc0463058726aafadd5c6375f8def625ecdd94c1d1936acb4eb393fbb7bc4cfb54744856e6e72b9ca05cf7ba16bc6fc6b96d3353ead97fb5c45f00c6b1
+
+### 4-1. [실패] 인증 없이 사용자 삭제 시도
+DELETE http://localhost:8080/users/1
