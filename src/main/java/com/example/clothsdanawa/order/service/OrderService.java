@@ -19,6 +19,8 @@ import com.example.clothsdanawa.order.entity.OrderItemInfo;
 import com.example.clothsdanawa.order.entity.OrderStatus;
 import com.example.clothsdanawa.order.repository.OrderRepository;
 import com.example.clothsdanawa.product.service.ProductService;
+import com.example.clothsdanawa.user.entity.User;
+import com.example.clothsdanawa.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,17 +31,22 @@ public class OrderService {
 	private final CartRepository cartRepository;
 	private final ProductService productService;
 	private final CartService cartService;
+	private final UserRepository userRepository;
+
 
 	// 1. 주문 생성
 	@Transactional
-	public OrderResponseDto createOrder(Long cartId, OrderRequestDto orderRequestDto) {
+	public OrderResponseDto createOrder(Long userId, OrderRequestDto orderRequestDto) {
 
-		if (orderRepository.findOrderByCartId(cartId).isPresent()) {
+		if (orderRepository.findByUserId(userId).isPresent()) {
 			throw new BaseException(ErrorCode.ORDER_DUPLICATE_CREATION);
 		} // 중복요청 확인
 
-		Cart cart = cartRepository.findById(cartId).orElseThrow(() ->
+		Cart cart = cartRepository.findByUserId(userId).orElseThrow(() ->//
 			new BaseException(ErrorCode.CART_NOT_FOUND));
+
+		User user = userRepository.findById(userId).orElseThrow(() ->
+			new BaseException(ErrorCode.USER_NOT_FOUND));
 
 		// 장바구니 내역 가져오기
 		List<CartItem> cartItems = cart.getCartItems();
@@ -52,10 +59,15 @@ public class OrderService {
 		// 총 금액 가져오기
 		int totalPrice = cart.getTotalPrice();
 
+		if (orderRequestDto.getPoint() < totalPrice) {
+			throw new BaseException(ErrorCode.INSUFFICIENT_POINT);
+		}
+
 		// 포인트 차감
 		// (입력된 포인트) - (총액수) -> (남은 포인트)
 		int point = orderRequestDto.getPoint();
 		int afterPayment = (point - totalPrice);
+
 
 		// 상품 재고 차감
 		for (CartItem item : cartItems) {
@@ -80,7 +92,7 @@ public class OrderService {
 			.cartList(orderItemInfos) // 장바구니 내역 저장
 			.orderStatus(OrderStatus.WAITING)
 			.point(afterPayment)
-			.cart(cart)
+			.user(user)
 			.build();
 
 		orderRepository.save(order);
@@ -93,17 +105,17 @@ public class OrderService {
 	}
 
 	// 2. 주문 조회
-	public OrderResponseDto findOrder(Long id) {
-		Order order = orderRepository.findById(id).orElseThrow(() ->
+	public OrderResponseDto findOrder(Long orderId) {
+		Order order = orderRepository.findById(orderId).orElseThrow(() ->
 			new BaseException(ErrorCode.ORDER_NOT_FOUND));
 
 		return new OrderResponseDto(order);
 	}
 
 	// 3. 주문 상태 변경
-	public String updateStatus(Long id, OrderStatus newStatus) {
+	public String updateStatus(Long orderId, OrderStatus newStatus) {
 
-		Order order = orderRepository.findById(id)
+		Order order = orderRepository.findById(orderId)
 			.orElseThrow(() -> new BaseException(ErrorCode.ORDER_NOT_FOUND));
 
 		// 상태 수정

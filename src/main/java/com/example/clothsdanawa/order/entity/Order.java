@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.clothsdanawa.cart.entity.Cart;
 import com.example.clothsdanawa.common.BaseEntity;
+import com.example.clothsdanawa.user.entity.User;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -50,17 +51,17 @@ public class Order extends BaseEntity {
 	private int point;
 
 	@OneToOne
-	@JoinColumn(name = "cart_id")
-	private Cart cart;
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@Builder
-	public Order (Long quantity, int totalPrice, List<OrderItemInfo> cartList, OrderStatus orderStatus, int point, Cart cart) {
+	public Order (Long quantity, int totalPrice, List<OrderItemInfo> cartList, OrderStatus orderStatus, int point, User user) {
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
 		this.cartList = cartList;
 		this.orderStatus = orderStatus;
 		this.point = point;
-		this.cart = cart;
+		this.user = user;
 	}
 
 	public void updateStatus(OrderStatus orderStatus) {

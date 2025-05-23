@@ -3,6 +3,7 @@ package com.example.clothsdanawa.order.controller;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.clothsdanawa.common.security.CustomUserPrincipal;
 import com.example.clothsdanawa.order.dto.OrderRequestDto;
 import com.example.clothsdanawa.order.dto.OrderResponseDto;
 import com.example.clothsdanawa.order.entity.OrderStatus;
@@ -27,12 +29,12 @@ public class OrderController {
 	private final OrderService orderService;
 
 	// todo : 1. 주문 생성
-	@PostMapping("/{cartId}")
+	@PostMapping
 	public ResponseEntity<OrderResponseDto> createOrder(
-		@PathVariable Long cartId, // 장바구니 id
+		@AuthenticationPrincipal CustomUserPrincipal userDetails,
 		@RequestBody OrderRequestDto orderRequestDto
 	) {
-		return ResponseEntity.ok(orderService.createOrder(cartId, orderRequestDto));
+		return ResponseEntity.ok(orderService.createOrder(userDetails.getUserId(), orderRequestDto));
 	}
 
 	// todo : 2. 주문 조회
@@ -48,7 +50,7 @@ public class OrderController {
 		@RequestParam OrderStatus status
 	) {
 		String message = orderService.updateStatus(orderId, status);
-		return ResponseEntity.ok(Map.of("상태가 업데이트 되었습니다", message));
+		return ResponseEntity.ok(Map.of("message", message));
 	}
 
 	// todo : 4. 주문 요청 취소

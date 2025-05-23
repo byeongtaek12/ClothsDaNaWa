@@ -35,6 +35,9 @@ public enum ErrorCode {
 	ORDER_DUPLICATE_CREATION(HttpStatus.BAD_REQUEST,"ORDER_002", "주문이 이미 생성되었습니다."),
 	ALREADY_CANCELLED(HttpStatus.BAD_REQUEST,"ORDER_003", "이미 취소된 주문입니다."),
 	ALREADY_DELIVERED(HttpStatus.BAD_REQUEST,"ORDER_004", "배송 완료된 주문은 취소할 수 없습니다."),
+	USER_NOT_FOUND(HttpStatus.NOT_FOUND,"ORDER_005", "해당 유저를 찾을 수 없습니다."),
+	INSUFFICIENT_POINT(HttpStatus.BAD_REQUEST,"ORDER_006", "잔액이 부족합니다."),
+
 
 	// 공통 예외 (추가 가능)
 	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "COMMON_001", "잘못된 입력값입니다."), // 코드 정해주세요
