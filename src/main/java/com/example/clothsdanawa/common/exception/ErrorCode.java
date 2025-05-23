@@ -20,6 +20,7 @@ public enum ErrorCode {
 	NOT_FOUND_USER_BY_EMAIL(HttpStatus.NOT_FOUND, "USER_004", "이메일을 가진 사용자를 찾을 수 없습니다."),
 	NOT_FOUND_USER_BY_ID(HttpStatus.NOT_FOUND, "USER_005", "아이디를 가진 사용자를 찾을 수 없습니다."),
 	CONFLICT_EMAIL(HttpStatus.CONFLICT, "USER_006", "이미 존재하는 이메일입니다"),
+	FORBIDDEN_NOT_CHANGE(HttpStatus.FORBIDDEN, "USER_007", "OAuth 유저는 비밀번호를 변경할 수 없습니다"),
 
 	// product
 	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "PRODUCT_001", "해당 상품을 찾을 수 없습니다."),
@@ -31,8 +32,11 @@ public enum ErrorCode {
 
 	// 공통 예외 (추가 가능)
 	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "COMMON_001", "잘못된 입력값입니다."), // 코드 정해주세요
-	UNAUTHORIZED_LOGIN_PLZ(HttpStatus.UNAUTHORIZED, "COMMON_002", "로그인을 해주세요"),
-	FORBIDDEN_BUT_LOGIN_OK(HttpStatus.FORBIDDEN, "COMMON_003", "로그인은 성공했지만 권한이 없습니다."),
+	UNAUTHORIZED_LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "COMMON_022", "로그인에 실패했습니다"),
+	UNAUTHORIZED_LOGIN_PLZ(HttpStatus.UNAUTHORIZED, "COMMON_023", "로그인을 해주세요"),
+	FORBIDDEN_BUT_LOGIN_OK(HttpStatus.FORBIDDEN, "COMMON_024", "로그인은 성공했지만 권한이 없습니다."),
+	UNAUTHORIZED_LOGIN_SUCCESS(HttpStatus.OK, "COMMON_025", "로그인에 성공했습니다"),
+	BAD_REQUEST_EMAIL_ESSENTIAL(HttpStatus.BAD_REQUEST, "COMMON_026", "이메일은 필수입니다"),
 	INTERNAL_SERVER_ERROR(HttpStatus.BAD_REQUEST, "COMMON_999", "서버 내부 오류가 발생했습니다."),
 	//cart
 	CART_NOT_FOUND(HttpStatus.NOT_FOUND, "CART_001", "장바구니가 없습니다."),
