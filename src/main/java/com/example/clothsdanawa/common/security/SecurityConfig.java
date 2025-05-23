@@ -17,6 +17,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.example.clothsdanawa.common.jwt.JwtFilter;
 import com.example.clothsdanawa.common.jwt.JwtUtil;
+import com.example.clothsdanawa.common.oauth.CustomFailureHandler;
+import com.example.clothsdanawa.common.oauth.CustomOAuthUserService;
+import com.example.clothsdanawa.common.oauth.CustomSuccessHandler;
 
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,11 @@ public class SecurityConfig {
 
 	private final JwtUtil jwtUtil;
 	private final CustomUserDetailsService userDetailsService;
+	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+	private final CustomAccessDeniedHandler customAccessDeniedHandler;
+	private final CustomOAuthUserService customOAuthUserService;
+	private final CustomSuccessHandler customSuccessHandler;
+	private final CustomFailureHandler customFailureHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,18 +44,22 @@ public class SecurityConfig {
 			.sessionManagement(sm ->
 				sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/auth/**").permitAll()  // WHITE_LIST 느낌
+				.requestMatchers("/auth/**", "/oauth2/authorization/**",
+					"/login/oauth2/code/**").permitAll()  // WHITE_LIST 느낌
 				.requestMatchers(HttpMethod.GET, "/stores/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/users/**").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/stores/**").hasRole("OWNER")
 				.anyRequest().authenticated()) // 나머지는 인증 필요
 			.anonymous(AbstractHttpConfigurer::disable) // 익명 객체 생성 비활성화
+			.oauth2Login(oauth -> oauth.userInfoEndpoint(userInfo ->
+					userInfo.userService(customOAuthUserService))
+				.successHandler(customSuccessHandler)
+				.failureHandler(customFailureHandler))
 			.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
 			.exceptionHandling((ex -> ex
-				.authenticationEntryPoint(((request,
-					response,
-					authException) -> response.sendError(401)))));
+				.authenticationEntryPoint(customAuthenticationEntryPoint)
+				.accessDeniedHandler(customAccessDeniedHandler)));
 		return http.build();
 	}
 

@@ -73,4 +73,8 @@ public class StoreService {
 		}
 		store.setStore(storeUpdateRequestDto);
 	}
+
+	public List<Store> searchByKeyword(String keyword) {
+		return storeRepository.searchStoreByKeyword(keyword);
+	}
 }

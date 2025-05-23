@@ -1,5 +1,10 @@
 package com.example.clothsdanawa.product.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.common.exception.GeneralException;
 import com.example.clothsdanawa.product.dto.response.ProductResponse;
@@ -7,11 +12,8 @@ import com.example.clothsdanawa.product.entity.Product;
 import com.example.clothsdanawa.product.repository.ProductRepository;
 import com.example.clothsdanawa.store.entity.Store;
 import com.example.clothsdanawa.store.repository.StoreRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 상품 관련 비즈니스 로직을 담당하는 서비스 클래스
@@ -84,5 +86,9 @@ public class ProductService {
 		Product product = productRepository.findById(productId)
 			.orElseThrow(() -> new GeneralException(ErrorCode.PRODUCT_NOT_FOUND));
 		return new ProductResponse(product);
+	}
+
+	public List<Product> searchByKeyword(String keyword) {
+		return productRepository.searchStoreByKeyword(keyword);
 	}
 }
