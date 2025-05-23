@@ -64,7 +64,6 @@ public class StoreController {
 		@RequestParam(required = false) String keyword
 	) {
 		StoreFilterRequestDto requestDto = new StoreFilterRequestDto(cursor - 1, keyword);
-		redisService.incrementCount(keyword);
 		List<Store> storeList = storeService.getStoreList(requestDto);
 		return new ResponseEntity<>(storeList, HttpStatus.OK);
 	}
