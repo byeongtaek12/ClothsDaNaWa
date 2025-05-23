@@ -1,21 +1,30 @@
+@accessToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwibmFtZSI6InVzZXIyIiwiZW1haWwiOiJ1c2VyMkBleGFtcGxlLmNvbSIsInVzZXJSb2xlIjoiT1dORVIiLCJleHAiOjE3NDc5MTIyNzMsImlhdCI6MTc0NzkwODY3M30.9K3L-O1ie8L2tRhv-n2yP5J_6tEZSaGcV9rVeB9kH7s
+
 ### 1. [성공] 스토어 등록 (테스트용)
 POST http://localhost:8080/test-store
 Content-Type: application/json
 
+{
+    "company" : "상호명1111",
+    "storeNumber" : "전화번호1",
+    "address" : "가게 주소111111"
+}
 
-### 2. [성공] 상품 등록
+
+### 1. [성공] 상품 등록
 POST http://localhost:8080/product
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
   "storeId": 1,
-  "productName": "테스트 반팔",
+  "productName": "테스트 반팔2",
   "price": 12000,
   "stock": 10
 }
 
 
-### 3. [실패] 존재하지 않는 스토어로 상품 등록
+### 2. [실패] 존재하지 않는 스토어로 상품 등록
 POST http://localhost:8080/product
 Content-Type: application/json
 
@@ -27,19 +36,19 @@ Content-Type: application/json
 }
 
 
-### 4. [성공] 상품 전체 조회
+### 3. [성공] 상품 전체 조회
 GET http://localhost:8080/product
 
 
-### 5. [성공] 상품 단건 조회
+### 4. [성공] 상품 단건 조회
 GET http://localhost:8080/product/1
 
 
-### 6. [실패] 존재하지 않는 상품 단건 조회
+### 5. [실패] 존재하지 않는 상품 단건 조회
 GET http://localhost:8080/product/9999
 
 
-### 7. [성공] 상품 수정
+### 6. [성공] 상품 수정
 PUT http://localhost:8080/product/1
 Content-Type: application/json
 
@@ -50,7 +59,7 @@ Content-Type: application/json
 }
 
 
-### 8. [실패] 존재하지 않는 상품 수정
+### 7. [실패] 존재하지 않는 상품 수정
 PUT http://localhost:8080/product/9999
 Content-Type: application/json
 
@@ -61,45 +70,60 @@ Content-Type: application/json
 }
 
 
-### 9. [성공] 재고 차감
+### 8. [성공] 재고 차감
 PATCH http://localhost:8080/product/1/stock
 Content-Type: application/json
 
 {
-  "quantity": 2
+  "quantity": 2,
+  "type": "DECREASE"
 }
 
 
-### 10. [실패] 과도한 재고 차감
+### 9. [실패] 과도한 재고 차감
 PATCH http://localhost:8080/product/1/stock
 Content-Type: application/json
 
 {
-  "quantity": 100
+  "quantity": 100,
+  "type": "DECREASE"
 }
 
 
-### 11. [실패] 존재하지 않는 상품 재고 차감
+### 10. [실패] 존재하지 않는 상품 재고 차감
 PATCH http://localhost:8080/product/9999/stock
 Content-Type: application/json
 
 {
-  "quantity": 1
+  "quantity": 1,
+  "type": "DECREASE"
 }
+
+
+### 11. [성공] 재고 증가
+PATCH http://localhost:8080/product/1/stock
+Content-Type: application/json
+
+{
+  "quantity": 5,
+  "type": "INCREASE"
+}
+
 
 ### 12. [실패] 재고 부족 시나리오 (OUT_OF_STOCK)
 PATCH http://localhost:8080/product/1/stock
 Content-Type: application/json
 
 {
-  "quantity": 9999
+  "quantity": 9999,
+  "type": "DECREASE"
 }
 
 
-### 12. [성공] 상품 삭제
+### 13. [성공] 상품 삭제
 DELETE http://localhost:8080/product/1
 
 
-### 13. [실패] 이미 삭제된 상품 다시 삭제 시도
+### 14. [실패] 이미 삭제된 상품 다시 삭제 시도
 DELETE http://localhost:8080/product/1
 ## 이미 삭제된 상품입니다 추가

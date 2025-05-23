@@ -1,0 +1,40 @@
+@baseUrl = http://localhost:8080
+@accessToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBleGFtcGxlLmNvbSIsInVzZXJSb2xlIjoiVVNFUiIsImV4cCI6MTc0NzkxMjIzNywiaWF0IjoxNzQ3OTA4NjM3fQ.d2ZAVOgbxCVqzBo0Y6lAACwZ5tn1LsCT2UlXA-VPbh0
+
+### 1. [성공] 장바구니 생성
+POST {{baseUrl}}/carts
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "productId": 2,
+  "quantity": 1
+}
+
+### 2. [성공] 내 장바구니 조회
+GET {{baseUrl}}/carts
+Authorization: Bearer {{accessToken}}
+
+### 3. [성공] 장바구니 수량 변경 (예: 수량 3으로 변경)
+PATCH {{baseUrl}}/carts
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "cartItemId": 1,
+  "quantity": 3
+}
+
+### 3-1. [특수] 수량 0으로 변경 (장바구니 아이템 삭제 효과)
+PATCH {{baseUrl}}/carts
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "cartItemId": 1,
+  "quantity": 0
+}
+
+### 4. [성공] 장바구니 전체 삭제
+DELETE {{baseUrl}}/carts
+Authorization: Bearer {{accessToken}}

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * 상품 API controller 클래스
+ * 상품 등록, 수정, 삭제, 조회, 재고 증감 관련 HTTP 요청을 처리한다.
  */
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +26,12 @@ public class ProductController {
 
 	private final ProductService productService;
 
+	/**
+	 * 상품 등록 API
+	 *
+	 * @param request 상품 등록 요청 DTO
+	 * @return 생성된 상품 ID를 포함한 응답 DTO
+	 */
 	@PostMapping
 	public ProductCreateResponse createProduct(@RequestBody ProductCreateRequest request) {
 		Long productId = productService.createProduct(
@@ -36,6 +43,13 @@ public class ProductController {
 		return new ProductCreateResponse(productId);
 	}
 
+	/**
+	 * 상품 수정 API
+	 *
+	 * @param productId 수정할 상품 ID
+	 * @param request 수정 요청 DTO
+	 * @return 수정 완료 메시지를 포함한 응답 DTO
+	 */
 	@PutMapping("/{productId}")
 	public ProductUpdateResponse updateProduct(@PathVariable Long productId,
 		@RequestBody ProductUpdateRequest request) {
@@ -48,12 +62,23 @@ public class ProductController {
 		return new ProductUpdateResponse("상품이 수정되었습니다.");
 	}
 
+	/**
+	 * 상품 삭제 API (Soft Delete)
+	 *
+	 * @param productId 삭제할 상품 ID
+	 * @return 삭제 완료 메시지를 포함한 응답 DTO
+	 */
 	@DeleteMapping("/{productId}")
 	public ProductUpdateResponse deleteProduct(@PathVariable Long productId) {
 		productService.deleteProduct(productId);
 		return new ProductUpdateResponse("상품이 삭제되었습니다.");
 	}
 
+	/**
+	 * 전체 상품 조회 API
+	 *
+	 * @return 전체 상품 목록 (Soft Delete 제외)
+	 */
 	@GetMapping
 	public List<ProductResponse> getAllProducts() {
 		return productService.findAllProducts().stream()
@@ -61,15 +86,31 @@ public class ProductController {
 			.collect(Collectors.toList());
 	}
 
+	/**
+	 * 상품 단건 조회 API
+	 *
+	 * @param productId 조회할 상품 ID
+	 * @return 해당 상품 정보
+	 */
 	@GetMapping("/{productId}")
 	public ProductResponse getProduct(@PathVariable Long productId) {
 		return productService.findProductById(productId);
 	}
 
+	/**
+	 * 상품 재고 변경 API (증가 / 감소)
+	 *
+	 * @param productId 상품 ID
+	 * @param request 재고 변경 요청 DTO (quantity, type)
+	 * @return 변경 후 상품 상태
+	 */
 	@PatchMapping("/{productId}/stock")
-	public ProductStockResponse decreaseStock(@PathVariable Long productId,
+	public ProductStockResponse updateStock(@PathVariable Long productId,
 		@RequestBody ProductStockRequest request) {
-		Product updatedProduct = productService.decreaseStock(productId, request.getQuantity());
+		Product updatedProduct = productService.updateStock(productId, request);
 		return new ProductStockResponse(updatedProduct);
 	}
+
+
 }
+
