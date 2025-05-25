@@ -21,6 +21,8 @@ public enum ErrorCode {
 	NOT_FOUND_USER_BY_ID(HttpStatus.NOT_FOUND, "USER_005", "아이디를 가진 사용자를 찾을 수 없습니다."),
 	CONFLICT_EMAIL(HttpStatus.CONFLICT, "USER_006", "이미 존재하는 이메일입니다"),
 	FORBIDDEN_NOT_CHANGE(HttpStatus.FORBIDDEN, "USER_007", "OAuth 유저는 비밀번호를 변경할 수 없습니다"),
+	UNAUTHORIZED_NULL_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "USER_008", "refreshToken 이 비어있습니다"),
+	UNAUTHORIZED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "USER_009", "refreshToken 이 유효하지 않습니다"),
 
 	// product
 	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "PRODUCT_001", "해당 상품을 찾을 수 없습니다."),
