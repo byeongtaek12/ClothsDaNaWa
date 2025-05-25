@@ -27,19 +27,6 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
-	 * 비즈니스 로직에서 발생하는 일반 예외 처리
-	 */
-	@ExceptionHandler(GeneralException.class)
-	public ResponseEntity<Map<String, Object>> handleGeneralException(GeneralException ex) {
-		Map<String, Object> body = new HashMap<>();
-		body.put("timestamp", LocalDateTime.now());
-		body.put("code", ex.getErrorCode().getErrorCode());
-		body.put("message", ex.getErrorCode().getMessage());
-
-		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-	}
-
-	/**
 	 * 시스템 내부 예외 처리 (같이 쓰셔도 됩니다)
 	 */
 	@ExceptionHandler(Exception.class)

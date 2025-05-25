@@ -1,7 +1,7 @@
 package com.example.clothsdanawa.product.entity;
 
+import com.example.clothsdanawa.common.exception.BaseException;
 import com.example.clothsdanawa.common.exception.ErrorCode;
-import com.example.clothsdanawa.common.exception.GeneralException;
 import com.example.clothsdanawa.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 /**
  * Product 엔티티 클래스
- * 상품 정보를 저장하고 재고를 줄일 때 낙관적 락(@Version)을 활용하여 동시성 문제를 방지
+ * 상품 정보를 저장하고 재고를 변경할 때 낙관적 락(@Version)을 활용하여 동시성 문제를 방지
  * soft delete를 위해 deletedAt을 사용함
  */
 @Entity
@@ -111,10 +111,31 @@ public class Product {
 	 * @param quantity 차감 수량
 	 */
 	public void decreaseStock(int quantity) {
+		if (this.deletedAt != null) {
+			throw new BaseException(ErrorCode.ALREADY_DELETED_PRODUCT);
+		}
+		if (quantity <= 0) {
+			throw new BaseException(ErrorCode.INVALID_STOCK_OPERATION);
+		}
 		if (this.stock < quantity) {
-			throw new GeneralException(ErrorCode.OUT_OF_STOCK);
+			throw new BaseException(ErrorCode.OUT_OF_STOCK);
 		}
 		this.stock -= quantity;
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	/**
+	 * 재고 증가
+	 * @param quantity 추가할 수량
+	 */
+	public void increaseStock(int quantity) {
+		if (this.deletedAt != null) {
+			throw new BaseException(ErrorCode.ALREADY_DELETED_PRODUCT);
+		}
+		if (quantity <= 0) {
+			throw new BaseException(ErrorCode.INVALID_STOCK_OPERATION);
+		}
+		this.stock += quantity;
 		this.updatedAt = LocalDateTime.now();
 	}
 

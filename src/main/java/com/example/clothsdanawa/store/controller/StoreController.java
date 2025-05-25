@@ -21,6 +21,7 @@ import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
 import com.example.clothsdanawa.store.dto.response.StoreResponseDto;
+import com.example.clothsdanawa.store.dto.response.VoidResponse;
 import com.example.clothsdanawa.store.entity.Store;
 import com.example.clothsdanawa.store.service.StoreService;
 
@@ -35,7 +36,7 @@ public class StoreController {
 	private final RedisService redisService;
 
 	@PostMapping
-	public ResponseEntity<Void> createStore(
+	public ResponseEntity<VoidResponse> createStore(
 		@AuthenticationPrincipal CustomUserPrincipal customUserPrincipal,
 		@RequestBody StoreCreateRequestDto requestDto
 	) {
@@ -43,11 +44,11 @@ public class StoreController {
 		String email = customUserPrincipal.getUsername();
 
 		storeService.createStore(requestDto, email);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(VoidResponse.from("쇼핑몰 등록을 요청하였습니다."), HttpStatus.OK);
 	}
 
 	@PutMapping("/{storeId}")
-	public ResponseEntity<Void> updateStore(
+	public ResponseEntity<VoidResponse> updateStore(
 		@AuthenticationPrincipal CustomUserPrincipal customUserPrincipal,
 		@RequestBody StoreUpdateRequestDto storeUpdateRequestDto,
 		@PathVariable Long storeId
@@ -55,7 +56,7 @@ public class StoreController {
 		String email = customUserPrincipal.getUsername();
 
 		storeService.updateStore(storeUpdateRequestDto, storeId, email);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(VoidResponse.from("쇼핑몰 정보를 수정하였습니다."),HttpStatus.OK);
 	}
 
 	@GetMapping
@@ -77,13 +78,13 @@ public class StoreController {
 	}
 
 	@PatchMapping("/{storeId}")
-	public ResponseEntity<Void> closeStore(
+	public ResponseEntity<VoidResponse> closeStore(
 		@AuthenticationPrincipal CustomUserPrincipal customUserPrincipal,
 		@PathVariable Long storeId
 	) {
 		String email = customUserPrincipal.getUsername();
 
 		storeService.closeStore(storeId, email);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(VoidResponse.from("쇼핑몰을 삭제하였습니다."),HttpStatus.OK);
 	}
 }

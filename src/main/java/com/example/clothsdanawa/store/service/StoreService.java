@@ -2,11 +2,11 @@ package com.example.clothsdanawa.store.service;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
+import com.example.clothsdanawa.common.exception.BaseException;
+import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
@@ -59,7 +59,7 @@ public class StoreService {
 		User ownerUser = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
 		if (store.getUser() != ownerUser) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			throw new BaseException(ErrorCode.STORE_FORBIDDEN);
 		}
 		store.closeStore();
 	}
@@ -69,12 +69,8 @@ public class StoreService {
 		User ownerUser = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(email);
 		Store store = storeRepository.findByStoreIdOrElseThrow(storeId);
 		if (store.getUser() != ownerUser) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			throw new BaseException(ErrorCode.STORE_FORBIDDEN);
 		}
 		store.setStore(storeUpdateRequestDto);
-	}
-
-	public List<Store> searchByKeyword(String keyword) {
-		return storeRepository.searchStoreByKeyword(keyword);
 	}
 }

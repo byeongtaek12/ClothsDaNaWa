@@ -13,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -24,7 +25,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Stores")
+// 인덱싱 수정 필요
+@Table(name = "Stores", indexes = {
+	@Index(name = "idx_store_user_id", columnList = "user_id"),
+	@Index(name = "idx_store_status", columnList = "storeStatus"),
+	@Index(name = "idx_store_store_number", columnList = "storeNumber", unique = true)
+})
 @DynamicInsert
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
