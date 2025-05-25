@@ -45,6 +45,7 @@ public class User extends BaseEntity {
 	private UserRole userRole;
 
 	private LocalDateTime deletedAt = null;
+	private String refreshToken;
 
 	@Builder
 	private User(String name, String email, String password, String address, String provider, String providerId,
@@ -95,6 +96,14 @@ public class User extends BaseEntity {
 		if (userUpdateRequestDto.getAddress() != null) {
 			this.address = userUpdateRequestDto.getAddress();
 		}
+	}
+
+	public void updateRefreshToken(String refreshToken) {
+		if (refreshToken.equals("null")) {
+			this.refreshToken = null;
+			return;
+		}
+		this.refreshToken = refreshToken;
 	}
 
 	public void softDelete() {
