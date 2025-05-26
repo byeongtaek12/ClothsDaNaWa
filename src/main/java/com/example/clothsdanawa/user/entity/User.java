@@ -48,8 +48,10 @@ public class User extends BaseEntity {
 	private String refreshToken;
 
 	@Builder
-	private User(String name, String email, String password, String address, String provider, String providerId,
+	private User(Long userId, String name, String email, String password, String address, String provider,
+		String providerId,
 		UserRole userRole) {
+		this.userId = userId;
 		this.name = name;
 		this.email = email;
 		this.password = password;
