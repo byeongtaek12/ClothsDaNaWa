@@ -1,0 +1,41 @@
+### 1. [성공] 회원가입
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "name": "user3",
+  "email": "user3@example.com",
+  "password": "testpassword",
+  "address": "주소",
+  "userRole": "ADMIN"
+}
+
+### 1-1. [실패] 중복된 이메일로 회원가입
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "name": "user1",
+  "email": "user1@example.com",
+  "password": "testpassword",
+  "address": "주소",
+  "userRole": "USER"
+}
+
+### 2. [성공] 로그인
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "user1@example.com",
+  "password": "testpassword"
+}
+
+### 2-1. [실패] 로그인 실패 (비밀번호 틀림)
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "user1@example.com",
+  "password": "wrongpassword"
+}
